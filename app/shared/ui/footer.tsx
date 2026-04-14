@@ -16,7 +16,7 @@ export const Footer = () => {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <footer className="w-full border-t border-white/5 bg-background">{children}</footer>
+  return <footer className="w-full border-t border-white/5 bg-linear-to-r from-primary to-olive-700">{children}</footer>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

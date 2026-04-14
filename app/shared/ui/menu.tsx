@@ -32,7 +32,7 @@ export const Menu = () => {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <header className="w-full bg-[#639922]">{children}</header>
+  return <header className="w-full bg-linear-to-r from-primary to-olive-700">{children}</header>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
