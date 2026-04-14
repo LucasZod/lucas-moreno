@@ -4,12 +4,16 @@ import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { CodeXml } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export const Menu = () => {
   return (
     <Container>
       <Layout>
-        <BrandSection> </BrandSection>
+        <BrandSection>
+          <Logo />
+        </BrandSection>
 
         <NavigationSection>
           <NavigationList>
@@ -41,6 +45,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 const BrandSection = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex  items-center">{children}</div>
+}
+
+const Logo = () => {
+  return (
+    <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+      <Link href="/" className="inline-flex items-center gap-2 cursor-pointer">
+        <CodeXml size={24} className="text-white" />
+      </Link>
+    </motion.div>
+  )
 }
 
 const NavigationSection = ({ children }: { children: React.ReactNode }) => {
