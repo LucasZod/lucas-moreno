@@ -3,8 +3,7 @@ import React from 'react'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
 import Link from 'next/link'
-import Image from 'next/image'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 export const Menu = () => {
   return (
@@ -88,11 +87,11 @@ const ResumeItem = () => {
   const { language } = useI18nStore()
   const t = translations[language].menu
   const pathname = usePathname()
-  const isActive = pathname === '/curriculo'
+  const isActive = pathname === '/resume'
 
   return (
     <li>
-      <LinkItem isActive={isActive} href="/curriculo">
+      <LinkItem isActive={isActive} href="/resume">
         {t.resume}
       </LinkItem>
     </li>
