@@ -29,7 +29,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <section className="md:py-24 md:px-30 px-6 py-16 space-y-16">{children}</section>
+  return <section className="md:py-24 md:px-30 px-6 py-16 space-y-11">{children}</section>
 }
 
 const Header = ({ pdfRef }: { pdfRef: React.RefObject<HTMLDivElement | null> }) => {
@@ -83,7 +83,7 @@ const Header = ({ pdfRef }: { pdfRef: React.RefObject<HTMLDivElement | null> }) 
       <motion.button
         variants={fadeUp}
         onClick={handleDownloadPDF}
-        className="inline-flex items-center gap-2 px-6 py-3 bg-[#639922] text-white font-medium rounded-lg hover:bg-[#537d1d] transition-colors duration-300"
+        className="inline-flex items-center gap-2 px-4 py-3 bg-[#639922] text-white text-sm font-medium rounded-lg hover:bg-[#537d1d] transition-colors duration-300"
       >
         <Download size={18} />
         {t.download}
@@ -100,7 +100,7 @@ const Companies = () => {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.1 }}
       variants={staggerContainer}
       className="space-y-6"
     >

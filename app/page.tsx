@@ -372,7 +372,7 @@ const ProjectsContainer = ({ children }: { children: React.ReactNode }) => {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0.1 }}
       variants={staggerContainer}
       className="space-y-8"
     >

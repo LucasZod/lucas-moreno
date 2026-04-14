@@ -24,7 +24,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <section className="md:py-24 md:px-30 px-6 py-16 space-y-16">{children}</section>
+  return <section className="md:py-24 md:px-30 px-0 py-16 space-y-16">{children}</section>
 }
 
 const Header = () => {
@@ -32,7 +32,7 @@ const Header = () => {
   const t = translations[language].patterns
 
   return (
-    <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6">
+    <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6 md:px-30 px-6">
       <motion.h1 variants={fadeUp} className="text-slate-900 text-4xl md:text-6xl font-semibold tracking-tight">
         {t.title}
       </motion.h1>
