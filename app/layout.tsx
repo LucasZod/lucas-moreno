@@ -1,18 +1,17 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk } from 'next/font/google'
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Menu } from './ui/menu'
 import { Footer } from './ui/footer'
 
-const spaceGrotesk = Space_Grotesk({
-  variable: '--font-space-grotesk',
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: '--font-plus-jakarta-sans',
   subsets: ['latin'],
 })
 
-const spaceGroteskMono = Space_Grotesk({
-  variable: '--font-space-grotesk-mono',
+const jetBrainsMono = JetBrains_Mono({
+  variable: '--font-jetbrains-mono',
   subsets: ['latin'],
-  weight: '500',
 })
 
 export const metadata: Metadata = {
@@ -88,7 +87,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${spaceGroteskMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${jetBrainsMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Menu />
         {children}

@@ -5,110 +5,56 @@
 }
 
 :root {
-  --background: #050505;
-  --foreground: #090909;
-  --text-white: #e0e0e0;
-  --primary: #7000ff;
-  --secondary: #00f0ff;
+  /* Light mode colors */
+  --background: #f8f7f4;
+  --foreground: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-tertiary: #94a3b8;
+  --border-color: #e2e8f0;
+  --card-bg: #f8fafc;
 
-  --border-image: linear-gradient(90deg, rgba(0, 208, 255, 0.8), rgba(164, 55, 254, 0.8));
+  /* Green accent - programador vibe */
+  --green-accent: #639922;
+  --green-accent-hover: #537d1d;
+  --green-accent-light: rgba(99, 153, 34, 0.1);
 
-  --text-glow: 0 0 12px rgba(164, 55, 254, 0.453), 0 0 18px rgba(164, 55, 254, 0.25);
-  --text-glow-strong:
-    0 0 2px rgba(164, 55, 254, 0.453), 0 0 4px rgba(164, 55, 254, 0.25), 0 0 10px rgba(164, 55, 254, 0.25),
-    0 0 18px rgba(164, 55, 254, 0.8);
+  --primary: #639922;
+  --primary-hover: #537d1d;
+}
 
-  --background-grid:
-    linear-gradient(rgba(120, 255, 120, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120, 255, 120, 0.025) 1px, transparent 1px);
+@media (prefers-color-scheme: dark) {
+}
 
-  --background-tertiary-grid-hover:
-    linear-gradient(rgba(0, 208, 255, 0.8) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(164, 55, 254, 0.915) 1px, transparent 1px);
-
-  --background-grid-size: 52px 52px;
+[data-theme='dark'] {
+  /* Dark mode forçado via atributo (quando implementarmos o toggle) */
+  --background: #0f172a;
+  --foreground: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --border-color: #334155;
+  --card-bg: #1e293b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-green-accent: var(--green-accent);
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-mono: var(--font-jetbrains-mono);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-secondary: var(--secondary);
-  --color-tertiary: var(--tertiary);
-  --font-sans: var(--font-space-grotesk);
-  --font-mono: var(--font-space-grotesk-mono);
-
-  --animate-left-sheet: leftSheet 0.35s ease-out;
-  --animate-right-sheet: rightSheet 0.35s ease-out;
-}
-
-@utility bg-grid {
-  background-image: var(--background-grid);
-  background-size: var(--background-grid-size);
-}
-
-@utility bg-grid-hover {
-  background-image: var(--background-tertiary-grid-hover);
-  background-size: var(--background-grid-size);
-}
-
-@utility text-glow-soft {
-  text-shadow: var(--text-glow);
-}
-
-@utility text-glow-strong {
-  text-shadow: var(--text-glow-strong);
-}
-
-@utility border-gradient {
-  position: relative;
-  :hover {
-    ::before {
-      opacity: 1;
-    }
-  }
-  ::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    padding: 1px;
-    border-radius: inherit;
-    background: var(--border-image);
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-}
-
-@keyframes leftSheet {
-  0% {
-    transform: translateX(5%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes rightSheet {
-  0% {
-    transform: translateX(-80%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  --color-secondary-hover: var(--secondary-hover);
 }
 
 body {
   background: var(--background);
-  color: var(--text-white);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }

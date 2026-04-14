@@ -1,13 +1,11 @@
 'use client'
 
+import { motion, Variants } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
-import { Chip } from '@/app/ui/chip'
-import { INFO_CARD } from '@/app/ui/info-card'
 import { forwardRef, useRef } from 'react'
-import { Button } from '../ui/button'
 import React from 'react'
-import { useMaskHover } from '../shared/hooks/use-mask-hover'
+import { Download } from 'lucide-react'
 
 export default function Resume() {
   const pdfRef = useRef<HTMLDivElement>(null)
@@ -27,22 +25,11 @@ export default function Resume() {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  const { handleMouseLeave, handleMouseMove, styleMask } = useMaskHover()
-
-  return (
-    <main className="min-h-dvh bg-grid relative" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      <ContainerHover styleMask={styleMask} />
-      {children}
-    </main>
-  )
-}
-
-const ContainerHover = ({ styleMask }: { styleMask: React.CSSProperties }) => {
-  return <div className="absolute inset-0 bg-grid-hover" style={styleMask} />
+  return <main className="min-h-dvh bg-[#F8F7F4]">{children}</main>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <section className="md:py-10 md:px-20 px-5 py-5 relative z-10 md:space-y-15 space-y-10">{children}</section>
+  return <section className="md:py-24 md:px-30 px-6 py-16 space-y-16">{children}</section>
 }
 
 const Header = ({ pdfRef }: { pdfRef: React.RefObject<HTMLDivElement | null> }) => {
@@ -86,37 +73,22 @@ const Header = ({ pdfRef }: { pdfRef: React.RefObject<HTMLDivElement | null> }) 
   }
 
   return (
-    <HeaderContainer>
-      <HeaderTitle>{t.title}</HeaderTitle>
-      <HeaderSubtitle>{t.subtitle}</HeaderSubtitle>
-      <ButtonDownload onDownload={handleDownloadPDF} />
-    </HeaderContainer>
-  )
-}
-
-const HeaderContainer = ({ children }: { children: React.ReactNode }) => {
-  return <header className="md:space-y-6 space-y-4">{children}</header>
-}
-
-const HeaderTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h1 className="text-white text-5xl md:text-9xl text-glow-soft font-bold animate-left-sheet">{children}</h1>
-}
-
-const HeaderSubtitle = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/70 text-xl md:text-2xl tracking-wide">{children}</p>
-}
-
-const ButtonDownload = ({ onDownload }: { onDownload: () => void }) => {
-  const { language } = useI18nStore()
-  const t = translations[language].resume
-
-  return (
-    <Button
-      className="inline-flex md:h-11 items-center justify-center bg-primary px-8 font-mono text-sm uppercase tracking-[0.08em] text-black! transition-all duration-300 hover:scale-[1.02] hover:text-glow-strong"
-      onClick={onDownload}
-    >
-      {t.download}
-    </Button>
+    <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6">
+      <motion.h1 variants={fadeUp} className="text-slate-900 text-4xl md:text-6xl font-semibold tracking-tight">
+        {t.title}
+      </motion.h1>
+      <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed max-w-2xl">
+        {t.subtitle}
+      </motion.p>
+      <motion.button
+        variants={fadeUp}
+        onClick={handleDownloadPDF}
+        className="inline-flex items-center gap-2 px-6 py-3 bg-[#639922] text-white font-medium rounded-lg hover:bg-[#537d1d] transition-colors duration-300"
+      >
+        <Download size={18} />
+        {t.download}
+      </motion.button>
+    </motion.header>
   )
 }
 
@@ -125,16 +97,18 @@ const Companies = () => {
   const companies = translations[language].resume.companies
 
   return (
-    <CompaniesContainer>
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="space-y-6"
+    >
       {companies.map((company, index) => (
         <CompanyCard key={company.name} company={company} index={index + 1} />
       ))}
-    </CompaniesContainer>
+    </motion.section>
   )
-}
-
-const CompaniesContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="space-y-8">{children}</section>
 }
 
 interface Company {
@@ -147,37 +121,40 @@ interface Company {
 }
 
 const CompanyCard = ({ company, index }: { company: Company; index: number }) => {
+  const { language } = useI18nStore()
+  const t = translations[language].resume
   const numberFormatted = index.toString().padStart(2, '0')
 
   return (
-    <INFO_CARD.Container>
-      <INFO_CARD.Layout>
-        <CompanyHeader>
-          <CompanyNumber>{numberFormatted}</CompanyNumber>
-          <CompanyInfo>
-            <CompanyName>{company.name}</CompanyName>
-            <CompanyPeriod>{company.period}</CompanyPeriod>
-          </CompanyInfo>
-        </CompanyHeader>
-        <INFO_CARD.TitleContainer>
-          <INFO_CARD.Title>{company.role}</INFO_CARD.Title>
-          <INFO_CARD.Subtitle>{company.description}</INFO_CARD.Subtitle>
-        </INFO_CARD.TitleContainer>
-        <AchievementsContainer>
-          <AchievementsTitle>PRINCIPAIS CONQUISTAS:</AchievementsTitle>
-          <AchievementsList>
-            {company.achievements.map((achievement, i) => (
-              <AchievementItem key={i}>{achievement}</AchievementItem>
-            ))}
-          </AchievementsList>
-        </AchievementsContainer>
-      </INFO_CARD.Layout>
-      <INFO_CARD.ChipContainer>
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6">
+      <CompanyHeader>
+        <span className="text-[#639922] text-4xl md:text-5xl font-bold">{numberFormatted}</span>
+        <CompanyInfo>
+          <h3 className="text-slate-900 text-xl md:text-2xl font-semibold">{company.name}</h3>
+          <span className="text-slate-500 text-sm">{company.period}</span>
+        </CompanyInfo>
+      </CompanyHeader>
+
+      <div className="space-y-3">
+        <h4 className="text-lg font-semibold text-slate-900">{company.role}</h4>
+        <p className="text-sm text-slate-600 leading-relaxed">{company.description}</p>
+      </div>
+
+      <AchievementsContainer>
+        <h5 className="font-mono text-xs uppercase tracking-widest text-[#639922]">{t.achievementsLabel}</h5>
+        <AchievementsList>
+          {company.achievements.map((achievement, i) => (
+            <AchievementItem key={i}>{achievement}</AchievementItem>
+          ))}
+        </AchievementsList>
+      </AchievementsContainer>
+
+      <StackContainer>
         {company.stack.map((tech) => (
-          <CompanyChip key={tech}>{tech}</CompanyChip>
+          <StackChip key={tech}>{tech}</StackChip>
         ))}
-      </INFO_CARD.ChipContainer>
-    </INFO_CARD.Container>
+      </StackContainer>
+    </motion.div>
   )
 }
 
@@ -185,77 +162,68 @@ const CompanyHeader = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex items-center gap-6">{children}</div>
 }
 
-const CompanyNumber = ({ children }: { children: React.ReactNode }) => {
-  return <span className="text-primary text-5xl md:text-6xl font-bold text-glow-soft">{children}</span>
-}
-
 const CompanyInfo = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex flex-col md:gap-1">{children}</div>
-}
-
-const CompanyName = ({ children }: { children: React.ReactNode }) => {
-  return <h3 className="text-white text-2xl md:text-3xl font-bold tracking-wide">{children}</h3>
-}
-
-const CompanyPeriod = ({ children }: { children: React.ReactNode }) => {
-  return <span className="text-white/50 text-sm tracking-wide">{children}</span>
+  return <div className="flex flex-col gap-1">{children}</div>
 }
 
 const AchievementsContainer = ({ children }: { children: React.ReactNode }) => {
-  return <div className="space-y-4 md:mt-6 mt-4">{children}</div>
-}
-
-const AchievementsTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h4 className="text-primary text-sm tracking-wide font-semibold">{children}</h4>
+  return <div className="space-y-3">{children}</div>
 }
 
 const AchievementsList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="space-y-3 list-none">{children}</ul>
+  return <ul className="space-y-2 list-none">{children}</ul>
 }
 
 const AchievementItem = ({ children }: { children: React.ReactNode }) => {
   return (
-    <li className="text-white/80 text-lg tracking-wide flex items-start gap-3">
-      <span className="text-secondary text-xl">→</span>
+    <li className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
+      <span className="text-[#639922] mt-1">→</span>
       <span>{children}</span>
     </li>
   )
 }
 
-const CompanyChip = ({ children }: { children: React.ReactNode }) => {
-  return <Chip variant="primary">{children}</Chip>
+const StackContainer = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex gap-1.5 flex-wrap">{children}</div>
+}
+
+const StackChip = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-[#639922]/20 text-[#639922] bg-[#639922]/5">
+      {children}
+    </span>
+  )
 }
 
 const AllHighlights = () => {
   const { language } = useI18nStore()
-  const t = translations[language].about
+  const t = translations[language]
+  const highlights = t.about.highlights
 
   return (
-    <HighlightsFullContainer>
-      <HighlightsTitle>COMPETÊNCIAS & HIGHLIGHTS</HighlightsTitle>
-      <HighlightsGrid>
-        {t.highlights.map((highlight) => (
-          <HighlightChip key={highlight}>{highlight}</HighlightChip>
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6"
+    >
+      <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold text-center">
+        {t.resume.highlightsTitle}
+      </motion.h2>
+      <motion.div variants={staggerContainer} className="flex gap-1.5 flex-wrap justify-center">
+        {highlights.map((highlight) => (
+          <motion.span
+            key={highlight}
+            variants={fadeUp}
+            className="font-mono text-xs px-2.5 py-1 rounded border border-[#639922]/20 text-[#639922] bg-[#639922]/5"
+          >
+            {highlight}
+          </motion.span>
         ))}
-      </HighlightsGrid>
-    </HighlightsFullContainer>
+      </motion.div>
+    </motion.section>
   )
-}
-
-const HighlightsFullContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="px-12 py-10 border-gradient space-y-6 bg-foreground w-full">{children}</section>
-}
-
-const HighlightsTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="text-white text-3xl font-bold tracking-wide text-center">{children}</h2>
-}
-
-const HighlightsGrid = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex gap-3 items-center flex-wrap justify-center">{children}</div>
-}
-
-const HighlightChip = ({ children }: { children: React.ReactNode }) => {
-  return <Chip variant="secondary">{children}</Chip>
 }
 
 const PDFContent = forwardRef<HTMLDivElement>((props, ref) => {
@@ -311,8 +279,8 @@ const PDFDivider = () => {
 const PDFExperiences = () => {
   const { language } = useI18nStore()
   const companies = translations[language].resume.companies
+  const t = translations[language].resume
   const titleLabel = language === 'pt' ? 'EXPERIÊNCIA PROFISSIONAL' : 'PROFESSIONAL EXPERIENCE'
-  const achievementsLabel = language === 'pt' ? 'PRINCIPAIS CONQUISTAS:' : 'KEY ACHIEVEMENTS:'
 
   return (
     <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -331,7 +299,7 @@ const PDFExperiences = () => {
           <p style={{ fontSize: '30px', color: '#333333', marginBottom: '8px' }}>{company.description}</p>
           <div style={{ marginLeft: '16px' }}>
             <p style={{ fontSize: '28px', fontWeight: '600', color: '#222222', marginBottom: '4px' }}>
-              {achievementsLabel}
+              {t.achievementsLabel}:
             </p>
             <ul style={{ paddingLeft: '20px', marginBottom: '8px' }}>
               {company.achievements.map((achievement, i) => (
@@ -422,3 +390,14 @@ const PDFReferences = () => {
     </div>
   )
 }
+
+// Variantes de animação
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+} as Variants
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+} as Variants

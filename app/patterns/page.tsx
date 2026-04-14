@@ -1,13 +1,12 @@
 'use client'
 
+import { motion, Variants } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
-import { Chip } from '@/app/ui/chip'
-import { EXP_CARD } from '@/app/ui/exp-card'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { useMaskHover } from '../shared/hooks/use-mask-hover'
 import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 
 export default function Patterns() {
   return (
@@ -21,21 +20,11 @@ export default function Patterns() {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  const { handleMouseLeave, handleMouseMove, styleMask } = useMaskHover()
-  return (
-    <main className="min-h-dvh bg-grid relative" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      <ContainerHover styleMask={styleMask} />
-      {children}
-    </main>
-  )
-}
-
-const ContainerHover = ({ styleMask }: { styleMask: React.CSSProperties }) => {
-  return <div className="absolute inset-0 bg-grid-hover" style={styleMask} />
+  return <main className="min-h-dvh bg-[#F8F7F4]">{children}</main>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <section className="md:py-10 md:px-20 px-5 py-5 relative z-10 md:space-y-15 space-y-10">{children}</section>
+  return <section className="md:py-24 md:px-30 px-6 py-16 space-y-16">{children}</section>
 }
 
 const Header = () => {
@@ -43,23 +32,15 @@ const Header = () => {
   const t = translations[language].patterns
 
   return (
-    <HeaderContainer>
-      <HeaderTitle>{t.title}</HeaderTitle>
-      <HeaderSubtitle>{t.subtitle}</HeaderSubtitle>
-    </HeaderContainer>
+    <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6">
+      <motion.h1 variants={fadeUp} className="text-slate-900 text-4xl md:text-6xl font-semibold tracking-tight">
+        {t.title}
+      </motion.h1>
+      <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed max-w-2xl">
+        {t.subtitle}
+      </motion.p>
+    </motion.header>
   )
-}
-
-const HeaderContainer = ({ children }: { children: React.ReactNode }) => {
-  return <header className="md:space-y-6 space-y-4">{children}</header>
-}
-
-const HeaderTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h1 className="text-white text-5xl md:text-9xl text-glow-soft font-bold animate-left-sheet">{children}</h1>
-}
-
-const HeaderSubtitle = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/70 text-xl md:text-2xl tracking-wide">{children}</p>
 }
 
 const PatternsList = () => {
@@ -67,16 +48,19 @@ const PatternsList = () => {
   const patterns = translations[language].patterns.items
 
   return (
-    <PatternsContainer>
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      animate="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="space-y-6"
+    >
       {patterns.map((pattern, index) => (
         <PatternCard key={pattern.name} pattern={pattern} index={index + 1} />
       ))}
-    </PatternsContainer>
+    </motion.section>
   )
-}
-
-const PatternsContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="flex flex-col gap-y-8">{children}</section>
 }
 
 interface Pattern {
@@ -89,84 +73,66 @@ interface Pattern {
 }
 
 const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) => {
+  const { language } = useI18nStore()
+  const t = translations[language].patterns.labels
   const [isExpanded, setIsExpanded] = useState(false)
   const numberFormatted = index.toString().padStart(2, '0')
 
   return (
-    <EXP_CARD.Container className="max-w-330 m-auto">
-      <EXP_CARD.Layout>
-        <EXP_CARD.Header>
-          <EXP_CARD.HeaderTitle className="text-xl">
-            {numberFormatted} - {pattern.category} {pattern.name.toUpperCase()}
-          </EXP_CARD.HeaderTitle>
-        </EXP_CARD.Header>
-        <EXP_CARD.TitleContainer>
+    <motion.div
+      variants={fadeUp}
+      className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6 max-w-7xl mx-auto"
+    >
+      <PatternHeader>
+        <span className="text-[#639922] text-3xl md:text-4xl font-bold">{numberFormatted}</span>
+        <PatternInfo>
+          <h3 className="text-slate-900 text-xl md:text-2xl font-semibold">
+            {pattern.category} {pattern.name.toUpperCase()}
+          </h3>
+        </PatternInfo>
+      </PatternHeader>
+
+      <PatternSection>
+        <PatternLabel>{t.problem}</PatternLabel>
+        <PatternText>{pattern.problem}</PatternText>
+      </PatternSection>
+
+      <PatternSection>
+        <PatternLabel>{t.benefits}</PatternLabel>
+        <BenefitsList>
+          {pattern.benefits.map((benefit) => (
+            <BenefitChip key={benefit}>{benefit}</BenefitChip>
+          ))}
+        </BenefitsList>
+      </PatternSection>
+
+      <ExpandButton isExpanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)} label={t} />
+
+      <ExpandedContent isExpanded={isExpanded}>
+        <div className="space-y-6">
           <PatternSection>
-            <PatternLabel>PROBLEMA:</PatternLabel>
-            <PatternText>{pattern.problem}</PatternText>
+            <PatternLabel>{t.solution}</PatternLabel>
+            <PatternText>{pattern.solution}</PatternText>
           </PatternSection>
 
-          <PatternSection>
-            <PatternLabel>BENEFÍCIOS:</PatternLabel>
-            <BenefitsList>
-              {pattern.benefits.map((benefit) => (
-                <BenefitItem key={benefit}>{benefit}</BenefitItem>
-              ))}
-            </BenefitsList>
-          </PatternSection>
-
-          <ExpandButton isExpanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)} />
-
-          <ExpandedContent isExpanded={isExpanded}>
-            <div className="space-y-6 pt-4">
-              <PatternSection>
-                <PatternLabel>SOLUÇÃO:</PatternLabel>
-                <PatternText>{pattern.solution}</PatternText>
-              </PatternSection>
-
-              {isExpanded && (
-                <PatternSection>
-                  <PatternLabel>EXEMPLO:</PatternLabel>
-                  <CodeBlock>{pattern.example}</CodeBlock>
-                </PatternSection>
-              )}
-            </div>
-          </ExpandedContent>
-        </EXP_CARD.TitleContainer>
-      </EXP_CARD.Layout>
-    </EXP_CARD.Container>
+          {isExpanded && (
+            <PatternSection>
+              <PatternLabel>{t.example}</PatternLabel>
+              <CodeBlock>{pattern.example}</CodeBlock>
+            </PatternSection>
+          )}
+        </div>
+      </ExpandedContent>
+    </motion.div>
   )
 }
 
-const ExpandButton = ({ isExpanded, onClick }: { isExpanded: boolean; onClick: () => void }) => {
-  return (
-    <button
-      onClick={onClick}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 py-3 mt-4 text-primary text-sm tracking-wide font-semibold hover:text-glow-soft transition-all duration-300 group"
-    >
-      <span>{isExpanded ? 'VER MENOS' : 'VER EXEMPLO'}</span>
-      <svg
-        className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
-  )
+const PatternHeader = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex items-center gap-6">{children}</div>
 }
 
-const ExpandedContent = ({ children, isExpanded }: { children: React.ReactNode; isExpanded: boolean }) => {
-  return (
-    <div
-      className={`overflow-hidden transition-all duration-300 ease-in-out ${
-        isExpanded ? 'max-h-2499.75 opacity-100' : 'max-h-0 opacity-0'
-      }`}
-    >
-      {children}
-    </div>
-  )
+const PatternInfo = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex flex-col gap-1">{children}</div>
 }
 
 const PatternSection = ({ children }: { children: React.ReactNode }) => {
@@ -174,22 +140,65 @@ const PatternSection = ({ children }: { children: React.ReactNode }) => {
 }
 
 const PatternLabel = ({ children }: { children: React.ReactNode }) => {
-  return <span className="text-primary text-sm tracking-wide font-semibold">{children}</span>
+  return <span className="font-mono text-xs uppercase tracking-widest text-[#639922]">{children}</span>
 }
 
 const PatternText = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/80 tracking-wide leading-relaxed">{children}</p>
+  return <p className="text-sm text-slate-600 leading-relaxed">{children}</p>
+}
+
+const BenefitsList = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex gap-1.5 flex-wrap">{children}</div>
+}
+
+const BenefitChip = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-[#639922]/20 text-[#639922] bg-[#639922]/5">
+      {children}
+    </span>
+  )
+}
+
+interface ExpandButtonProps {
+  isExpanded: boolean
+  onClick: () => void
+  label: {
+    viewMore: string
+    viewLess: string
+  }
+}
+
+const ExpandButton = ({ isExpanded, onClick, label }: ExpandButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full cursor-pointer flex items-center justify-center gap-2 py-3 mt-4 text-[#639922] text-sm font-medium hover:bg-[#639922]/5 transition-all duration-300 rounded-lg group"
+    >
+      <span>{isExpanded ? label.viewLess : label.viewMore}</span>
+      <ChevronDown size={16} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+    </button>
+  )
+}
+
+const ExpandedContent = ({ children, isExpanded }: { children: React.ReactNode; isExpanded: boolean }) => {
+  return (
+    <div
+      className={`overflow-hidden transition-all duration-400 ease-in-out ${isExpanded ? 'opacity-100' : 'opacity-0'}`}
+    >
+      {children}
+    </div>
+  )
 }
 
 const CodeBlock = ({ children }: { children: React.ReactNode }) => {
   const customStyle = {
     margin: 0,
     padding: '24px',
-    borderRadius: '2px',
+    borderRadius: '8px',
     fontSize: '14px',
     lineHeight: '1.6',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    border: '1px solid rgba(255, 0, 127, 0.2)',
+    backgroundColor: '#0f151e',
+    border: '1px solid #e2e8f0',
   }
 
   return (
@@ -201,7 +210,7 @@ const CodeBlock = ({ children }: { children: React.ReactNode }) => {
       wrapLines={true}
       codeTagProps={{
         style: {
-          fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+          fontFamily: 'var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
         },
       }}
     >
@@ -210,10 +219,13 @@ const CodeBlock = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const BenefitsList = ({ children }: { children: React.ReactNode }) => {
-  return <ul className="flex gap-2 flex-wrap">{children}</ul>
-}
+// Variantes de animação
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+} as Variants
 
-const BenefitItem = ({ children }: { children: React.ReactNode }) => {
-  return <Chip variant="secondary">{children}</Chip>
-}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+} as Variants

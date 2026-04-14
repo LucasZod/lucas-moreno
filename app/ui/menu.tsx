@@ -4,16 +4,13 @@ import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
 import Link from 'next/link'
 import Image from 'next/image'
-import lmIcon from '@/app/icon.png'
 import { useRouter, usePathname } from 'next/navigation'
 
 export const Menu = () => {
   return (
     <Container>
       <Layout>
-        <BrandSection>
-          <BrandImage />
-        </BrandSection>
+        <BrandSection> </BrandSection>
 
         <NavigationSection>
           <NavigationList>
@@ -32,12 +29,12 @@ export const Menu = () => {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <header className="w-full">{children}</header>
+  return <header className="w-full bg-[#639922]">{children}</header>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <section className="w-full flex px-2 md:px-5 h-18 items-center justify-between border-b border-white/5">
+    <section className="w-full flex px-2 md:px-5 h-15 items-center justify-between border-b border-white/30">
       {children}
     </section>
   )
@@ -45,19 +42,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 const BrandSection = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex  items-center">{children}</div>
-}
-
-const BrandImage = () => {
-  const router = useRouter()
-  return (
-    <figure
-      className="w-15 h-15 overflow-hidden cursor-pointer animate-right-sheet"
-      key="brand-image"
-      onClick={() => router.push('/')}
-    >
-      <Image src={lmIcon} alt="Brand Icon" className="object-cover" loading="eager" />
-    </figure>
-  )
 }
 
 const NavigationSection = ({ children }: { children: React.ReactNode }) => {
@@ -72,6 +56,19 @@ const NavigationList = ({ children }: { children: React.ReactNode }) => {
   return <ul className="flex items-center gap-x-4 md:gap-x-8 md:gap-10">{children}</ul>
 }
 
+const LinkItem = ({ children, href, isActive }: { children: React.ReactNode; href: string; isActive?: boolean }) => {
+  return (
+    <Link
+      className={`group relative inline-flex items-center hover:text-white font-mono text-[0.72rem] uppercase tracking-[0.08em] transition-all duration-300 ${
+        isActive ? 'text-white' : 'text-white/60'
+      }`}
+      href={href}
+    >
+      {children}
+    </Link>
+  )
+}
+
 const HomeItem = () => {
   const { language } = useI18nStore()
   const t = translations[language].menu
@@ -80,20 +77,9 @@ const HomeItem = () => {
 
   return (
     <li>
-      <Link
-        href="/"
-        className={`group relative inline-flex items-center font-mono text-[0.72rem] uppercase tracking-[0.08em] transition-all duration-300 ${
-          isActive ? 'text-primary text-glow-soft' : 'text-white/70 hover:text-primary hover:text-glow-soft'
-        }`}
-      >
+      <LinkItem isActive={isActive} href="/">
         {t.home}
-        {isActive && (
-          <>
-            <span className="absolute -bottom-2 left-0 h-px w-full bg-primary opacity-100 shadow-[0_0_8px_rgba(255,0,127,0.6)]" />
-            <span className="absolute -bottom-2 left-0 h-1.5 w-full bg-primary/10 blur-sm" />
-          </>
-        )}
-      </Link>
+      </LinkItem>
     </li>
   )
 }
@@ -106,20 +92,9 @@ const ResumeItem = () => {
 
   return (
     <li>
-      <Link
-        href="/curriculo"
-        className={`group relative inline-flex items-center font-mono text-[0.72rem] uppercase tracking-[0.08em] transition-all duration-300 ${
-          isActive ? 'text-primary text-glow-soft' : 'text-white/70 hover:text-primary hover:text-glow-soft'
-        }`}
-      >
+      <LinkItem isActive={isActive} href="/curriculo">
         {t.resume}
-        {isActive && (
-          <>
-            <span className="absolute -bottom-2 left-0 h-px w-full bg-primary opacity-100 shadow-[0_0_8px_rgba(255,0,127,0.6)]" />
-            <span className="absolute -bottom-2 left-0 h-1.5 w-full bg-primary/10 blur-sm" />
-          </>
-        )}
-      </Link>
+      </LinkItem>
     </li>
   )
 }
@@ -132,20 +107,9 @@ const PatternsItem = () => {
 
   return (
     <li>
-      <Link
-        href="/patterns"
-        className={`group relative inline-flex items-center font-mono text-[0.72rem] uppercase tracking-[0.08em] transition-all duration-300 ${
-          isActive ? 'text-primary text-glow-soft' : 'text-white/70 hover:text-primary hover:text-glow-soft'
-        }`}
-      >
+      <LinkItem isActive={isActive} href="/patterns">
         {t.patterns}
-        {isActive && (
-          <>
-            <span className="absolute -bottom-2 left-0 h-px w-full bg-primary opacity-100 shadow-[0_0_8px_rgba(255,0,127,0.6)]" />
-            <span className="absolute -bottom-2 left-0 h-1.5 w-full bg-primary/10 blur-sm" />
-          </>
-        )}
-      </Link>
+      </LinkItem>
     </li>
   )
 }
@@ -160,7 +124,7 @@ const LanguageToggle = () => {
   return (
     <button
       onClick={toggleLanguage}
-      className="inline-flex h-11 items-center justify-center border border-white/10 px-4 font-mono text-[0.72rem] uppercase tracking-[0.08em] text-white/70 transition-all duration-300 hover:border-primary/40 hover:text-primary hover:text-glow-soft"
+      className="inline-flex h-10 cursor-pointer items-center justify-center border border-white/20 px-3 font-mono text-[0.72rem] uppercase tracking-[0.08em] text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10"
       aria-label="Toggle language"
     >
       {language === 'pt' ? 'PT' : 'EN'}

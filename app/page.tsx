@@ -1,20 +1,19 @@
 'use client'
 
+import { motion, Variants } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
-import { Chip } from './ui/chip'
-import { INFO_CARD } from './ui/info-card'
-import { EXP_CARD } from './ui/exp-card'
+import { Code2, Banknote, FileText, Server, Zap, Network } from 'lucide-react'
 import { Carousel } from './shared/libs/carousel'
-import Image from 'next/image'
-import { useMaskHover } from './shared/hooks/use-mask-hover'
 
 export default function Home() {
   return (
     <Container>
       <Layout>
-        <Title />
-        <Subtitle />
+        <HeroContainer>
+          <Title />
+          <Subtitle />
+        </HeroContainer>
         <Experience />
         <Skills />
         <About />
@@ -25,22 +24,15 @@ export default function Home() {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  const { handleMouseLeave, handleMouseMove, styleMask } = useMaskHover()
-
-  return (
-    <main className="min-h-dvh bg-grid relative" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      <ContainerHover styleMask={styleMask} />
-      {children}
-    </main>
-  )
-}
-
-const ContainerHover = ({ styleMask }: { styleMask: React.CSSProperties }) => {
-  return <div className="absolute inset-0 bg-grid-hover" style={styleMask} />
+  return <main className="min-h-dvh bg-[#F8F7F4]">{children}</main>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <section className="md:py-10 md:px-20 px-5 py-5 relative z-10 md:space-y-15 space-y-10">{children}</section>
+  return <section className="md:py-24 md:px-30 px-6 py-16 space-y-16">{children}</section>
+}
+
+const HeroContainer = ({ children }: { children: React.ReactNode }) => {
+  return <section className="space-y-6">{children}</section>
 }
 
 const Title = () => {
@@ -48,10 +40,14 @@ const Title = () => {
   const t = translations[language].home
 
   return (
-    <header className="space-y-2">
-      <h2 className=" tracking-widest text-primary/70">{t.greeting}</h2>
-      <h1 className="text-white text-5xl md:text-9xl text-glow-soft font-bold animate-left-sheet">{t.name}</h1>
-    </header>
+    <motion.header key={language} initial="hidden" animate="visible" variants={staggerContainer} className="space-y-3">
+      <motion.span variants={fadeUp} className="font-mono text-xs uppercase tracking-widest text-green-accent">
+        {t.greeting}
+      </motion.span>
+      <motion.h1 variants={fadeUp} className="text-slate-900 text-4xl md:text-7xl font-semibold tracking-tight">
+        {t.name}
+      </motion.h1>
+    </motion.header>
   )
 }
 
@@ -60,13 +56,18 @@ const Subtitle = () => {
   const t = translations[language].home
 
   return (
-    <INFO_CARD.Container>
-      <INFO_CARD.Layout>
-        <INFO_CARD.TitleContainer>
-          <INFO_CARD.Subtitle>{t.subtitle}</INFO_CARD.Subtitle>
-        </INFO_CARD.TitleContainer>
-      </INFO_CARD.Layout>
-    </INFO_CARD.Container>
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="max-w-3xl"
+      key={language}
+    >
+      <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed">
+        {t.subtitle}
+      </motion.p>
+    </motion.section>
   )
 }
 
@@ -75,42 +76,93 @@ const Experience = () => {
   const experiences = translations[language].experiences
 
   return (
-    <ExperienceContainer>
+    <ExperienceContainer key={language}>
       <Carousel>
         {experiences.map((experience) => (
-          <EXP_CARD.Container key={experience.headerTitle} className="border-gradient">
-            <EXP_CARD.Layout>
-              <EXP_CARD.Header>
-                <EXP_CARD.HeaderTitle>{experience.headerTitle}</EXP_CARD.HeaderTitle>
-                <ExperienceIcon src={experience.iconSrc} alt={experience.headerTitle} />
-              </EXP_CARD.Header>
-              <EXP_CARD.TitleContainer>
-                <EXP_CARD.Title>{experience.title}</EXP_CARD.Title>
-                <EXP_CARD.Subtitle>{experience.subtitle}</EXP_CARD.Subtitle>
-              </EXP_CARD.TitleContainer>
-              <EXP_CARD.ChipContainer>
-                {experience.chip.map((chip) => (
-                  <ExperienceChip key={chip} chip={chip} />
-                ))}
-              </EXP_CARD.ChipContainer>
-            </EXP_CARD.Layout>
-          </EXP_CARD.Container>
+          <ExperienceCard key={experience.headerTitle} experience={experience} />
         ))}
       </Carousel>
     </ExperienceContainer>
   )
 }
 
-const ExperienceIcon = ({ src, alt }: { src: string; alt: string }) => {
-  return <Image src={src} alt={alt} width={23} height={23} style={{ width: 'auto', height: 'auto' }} />
-}
-
-const ExperienceChip = ({ chip }: { chip: string }) => {
-  return <Chip variant="primary">{chip}</Chip>
-}
-
 const ExperienceContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section>{children}</section>
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+    >
+      {children}
+    </motion.section>
+  )
+}
+
+const ExperienceGrid = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {children}
+    </motion.div>
+  )
+}
+
+interface Experience {
+  headerTitle: string
+  title: string
+  subtitle: string
+  chip: string[]
+  iconSrc: string
+}
+
+const ExperienceCard = ({ experience }: { experience: Experience }) => {
+  const IconComponent = iconMap[experience.iconSrc] || Code2
+
+  return (
+    <motion.div variants={fadeLeft} className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+      <ExperienceCardContainer>
+        <ExperienceCardHeader>
+          <span className="font-mono text-xs uppercase tracking-widest text-green-accent">
+            {experience.headerTitle}
+          </span>
+          <IconComponent size={24} className="text-green-accent" />
+        </ExperienceCardHeader>
+        <ExperienceCardContent>
+          <h3 className="text-lg font-semibold text-slate-900">{experience.title}</h3>
+          <p className="text-sm text-slate-600 leading-relaxed mt-2">{experience.subtitle}</p>
+        </ExperienceCardContent>
+        <ExperienceCardTags>
+          {experience.chip.map((chip) => (
+            <ExperienceChip key={chip}>{chip}</ExperienceChip>
+          ))}
+        </ExperienceCardTags>
+      </ExperienceCardContainer>
+    </motion.div>
+  )
+}
+
+const ExperienceCardContainer = ({ children }: { children: React.ReactNode }) => {
+  return <div className="w-60 md:w-75 space-y-6">{children}</div>
+}
+
+const ExperienceCardHeader = ({ children }: { children: React.ReactNode }) => {
+  return <header className="flex items-center justify-between">{children}</header>
+}
+
+const ExperienceCardContent = ({ children }: { children: React.ReactNode }) => {
+  return <div className="space-y-2">{children}</div>
+}
+
+const ExperienceCardTags = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex gap-1.5 flex-wrap">{children}</div>
+}
+
+const ExperienceChip = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-green-accent/20 text-green-accent bg-green-accent/5">
+      {children}
+    </span>
+  )
 }
 
 const Skills = () => {
@@ -134,44 +186,74 @@ const Skills = () => {
 }
 
 const SkillsContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="space-y-10">{children}</section>
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="space-y-8"
+    >
+      {children}
+    </motion.section>
+  )
 }
 
 const SkillsHeader = ({ children }: { children: React.ReactNode }) => {
-  return <header className="space-y-4">{children}</header>
+  return (
+    <motion.header variants={staggerContainer} className="space-y-3">
+      {children}
+    </motion.header>
+  )
 }
 
 const SkillsTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="text-white text-5xl text-glow-soft font-bold tracking-wide">{children}</h2>
+  return (
+    <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold">
+      {children}
+    </motion.h2>
+  )
 }
 
 const SkillsSubtitle = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/70 text-lg tracking-wide max-w-200">{children}</p>
+  return (
+    <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed max-w-2xl">
+      {children}
+    </motion.p>
+  )
 }
 
 const SkillsGrid = ({ children }: { children: React.ReactNode }) => {
-  return <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">{children}</div>
+  return (
+    <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {children}
+    </motion.div>
+  )
 }
 
 const SkillCategory = ({ category }: { category: { title: string; skills: string[] } }) => {
   return (
-    <INFO_CARD.Container>
-      <INFO_CARD.Layout>
-        <INFO_CARD.TitleContainer>
-          <INFO_CARD.Title>{category.title}</INFO_CARD.Title>
-        </INFO_CARD.TitleContainer>
-      </INFO_CARD.Layout>
-      <INFO_CARD.ChipContainer>
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-5">
+      <h4 className="text-lg font-semibold text-slate-900">{category.title}</h4>
+      <SkillCategoryTags>
         {category.skills.map((skill) => (
           <SkillChip key={skill}>{skill}</SkillChip>
         ))}
-      </INFO_CARD.ChipContainer>
-    </INFO_CARD.Container>
+      </SkillCategoryTags>
+    </motion.div>
   )
 }
 
+const SkillCategoryTags = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex gap-1.5 flex-wrap">{children}</div>
+}
+
 const SkillChip = ({ children }: { children: React.ReactNode }) => {
-  return <Chip variant="secondary">{children}</Chip>
+  return (
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-green-accent/20 text-green-accent bg-green-accent/5">
+      {children}
+    </span>
+  )
 }
 
 const About = () => {
@@ -184,50 +266,86 @@ const About = () => {
         <AboutTitle>{t.title}</AboutTitle>
         <AboutSubtitle>{t.subtitle}</AboutSubtitle>
       </AboutHeader>
-      <INFO_CARD.Container>
-        <INFO_CARD.Layout>
-          <AboutContent>
-            {t.paragraphs.map((paragraph, index) => (
-              <AboutParagraph key={index}>{paragraph}</AboutParagraph>
-            ))}
-          </AboutContent>
-        </INFO_CARD.Layout>
-        <INFO_CARD.ChipContainer>
+      <AboutCard>
+        <AboutContent>
+          {t.paragraphs.map((paragraph, index) => (
+            <AboutParagraph key={index}>{paragraph}</AboutParagraph>
+          ))}
+        </AboutContent>
+        <AboutTags>
           {t.highlights.map((highlight) => (
             <AboutChip key={highlight}>{highlight}</AboutChip>
           ))}
-        </INFO_CARD.ChipContainer>
-      </INFO_CARD.Container>
+        </AboutTags>
+      </AboutCard>
     </AboutContainer>
   )
 }
 
 const AboutContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="space-y-10">{children}</section>
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="space-y-8"
+    >
+      {children}
+    </motion.section>
+  )
 }
 
 const AboutHeader = ({ children }: { children: React.ReactNode }) => {
-  return <header className="space-y-4">{children}</header>
+  return (
+    <motion.header variants={staggerContainer} className="space-y-3">
+      {children}
+    </motion.header>
+  )
 }
 
 const AboutTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="text-white text-5xl text-glow-soft font-bold tracking-wide">{children}</h2>
+  return (
+    <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold">
+      {children}
+    </motion.h2>
+  )
 }
 
 const AboutSubtitle = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/70 text-lg tracking-wide">{children}</p>
+  return (
+    <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed">
+      {children}
+    </motion.p>
+  )
+}
+
+const AboutCard = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6">
+      {children}
+    </motion.div>
+  )
 }
 
 const AboutContent = ({ children }: { children: React.ReactNode }) => {
-  return <div className="space-y-6">{children}</div>
+  return <div className="space-y-4">{children}</div>
 }
 
 const AboutParagraph = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/80 text-lg tracking-wide leading-relaxed">{children}</p>
+  return <p className="text-sm text-slate-600 leading-relaxed">{children}</p>
+}
+
+const AboutTags = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex gap-1.5 flex-wrap">{children}</div>
 }
 
 const AboutChip = ({ children }: { children: React.ReactNode }) => {
-  return <Chip variant="secondary">{children}</Chip>
+  return (
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-green-accent/20 text-green-accent bg-green-accent/5">
+      {children}
+    </span>
+  )
 }
 
 const Projects = () => {
@@ -242,7 +360,7 @@ const Projects = () => {
       </ProjectsHeader>
       <ProjectsGrid>
         {t.items.map((project) => (
-          <ProjectCard key={project.number} project={project} />
+          <ProjectCard key={project.number} project={project} labels={t.labels} />
         ))}
       </ProjectsGrid>
     </ProjectsContainer>
@@ -250,23 +368,49 @@ const Projects = () => {
 }
 
 const ProjectsContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="space-y-10">{children}</section>
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="space-y-8"
+    >
+      {children}
+    </motion.section>
+  )
 }
 
 const ProjectsHeader = ({ children }: { children: React.ReactNode }) => {
-  return <header className="space-y-4">{children}</header>
+  return (
+    <motion.header variants={staggerContainer} className="space-y-3">
+      {children}
+    </motion.header>
+  )
 }
 
 const ProjectsTitle = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="text-white text-5xl text-glow-soft font-bold tracking-wide">{children}</h2>
+  return (
+    <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold">
+      {children}
+    </motion.h2>
+  )
 }
 
 const ProjectsSubtitle = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/70 text-lg tracking-wide">{children}</p>
+  return (
+    <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed">
+      {children}
+    </motion.p>
+  )
 }
 
 const ProjectsGrid = ({ children }: { children: React.ReactNode }) => {
-  return <Carousel>{children}</Carousel>
+  return (
+    <motion.div variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {children}
+    </motion.div>
+  )
 }
 
 interface Project {
@@ -279,59 +423,102 @@ interface Project {
   architecture: string
 }
 
-const ProjectCard = ({ project }: { project: Project }) => {
+interface ProjectLabels {
+  problem: string
+  solution: string
+  impact: string
+  architecture: string
+}
+
+const ProjectCard = ({ project, labels }: { project: Project; labels: ProjectLabels }) => {
   return (
-    <EXP_CARD.Container className="max-w-90 border-gradient">
-      <EXP_CARD.Layout>
-        <EXP_CARD.Header>
-          <EXP_CARD.HeaderTitle>
-            {project.number} {'//'} {project.title}
-          </EXP_CARD.HeaderTitle>
-        </EXP_CARD.Header>
-        <EXP_CARD.TitleContainer>
-          <ProjectSection>
-            <ProjectLabel>PROBLEMA:</ProjectLabel>
-            <ProjectText>{project.problem}</ProjectText>
-          </ProjectSection>
-          <ProjectSection>
-            <ProjectLabel>SOLUÇÃO:</ProjectLabel>
-            <ProjectText>{project.solution}</ProjectText>
-          </ProjectSection>
-          <ProjectSection>
-            <ProjectLabel>IMPACTO:</ProjectLabel>
-            <ProjectImpact>{project.impact}</ProjectImpact>
-          </ProjectSection>
-          <ProjectSection>
-            <ProjectLabel>ARQUITETURA:</ProjectLabel>
-            <ProjectText>{project.architecture}</ProjectText>
-          </ProjectSection>
-        </EXP_CARD.TitleContainer>
-        <EXP_CARD.ChipContainer>
-          {project.stack.map((tech, index) => (
-            <ProjectChip key={`${project.number}-${index}`}>{tech}</ProjectChip>
-          ))}
-        </EXP_CARD.ChipContainer>
-      </EXP_CARD.Layout>
-    </EXP_CARD.Container>
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-5">
+      <ProjectCardHeader>
+        <span className="font-mono uppercase tracking-wide text-green-accent">
+          {project.number} {project.title}
+        </span>
+      </ProjectCardHeader>
+      <ProjectCardContent>
+        <ProjectSection>
+          <ProjectLabel>{labels.problem}</ProjectLabel>
+          <ProjectText>{project.problem}</ProjectText>
+        </ProjectSection>
+        <ProjectSection>
+          <ProjectLabel>{labels.solution}</ProjectLabel>
+          <ProjectText>{project.solution}</ProjectText>
+        </ProjectSection>
+        <ProjectSection>
+          <ProjectLabel>{labels.impact}</ProjectLabel>
+          <ProjectText>{project.impact}</ProjectText>
+        </ProjectSection>
+        <ProjectSection>
+          <ProjectLabel>{labels.architecture}</ProjectLabel>
+          <ProjectText>{project.architecture}</ProjectText>
+        </ProjectSection>
+      </ProjectCardContent>
+      <ProjectCardTags>
+        {project.stack.map((tech, index) => (
+          <ProjectChip key={`${project.number}-${index}`}>{tech}</ProjectChip>
+        ))}
+      </ProjectCardTags>
+    </motion.div>
   )
 }
 
+const ProjectCardHeader = ({ children }: { children: React.ReactNode }) => {
+  return <header>{children}</header>
+}
+
+const ProjectCardContent = ({ children }: { children: React.ReactNode }) => {
+  return <div className="space-y-3">{children}</div>
+}
+
 const ProjectSection = ({ children }: { children: React.ReactNode }) => {
-  return <div className="space-y-2">{children}</div>
+  return <div className="space-y-1.5">{children}</div>
 }
 
 const ProjectLabel = ({ children }: { children: React.ReactNode }) => {
-  return <span className="text-primary text-sm tracking-wide font-semibold">{children}</span>
+  return <span className="font-mono text-xs uppercase tracking-widest text-green-accent">{children}</span>
 }
 
 const ProjectText = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-white/80 tracking-wide">{children}</p>
+  return <p className="text-sm text-slate-600 leading-relaxed">{children}</p>
 }
 
-const ProjectImpact = ({ children }: { children: React.ReactNode }) => {
-  return <p className="text-secondary tracking-wide font-semibold">{children}</p>
+const ProjectCardTags = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex gap-1.5 flex-wrap">{children}</div>
 }
 
 const ProjectChip = ({ children }: { children: React.ReactNode }) => {
-  return <Chip variant="primary">{children}</Chip>
+  return (
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-green-accent/20 text-green-accent bg-green-accent/5">
+      {children}
+    </span>
+  )
+}
+
+// Variantes de animação
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+} as Variants
+
+const fadeLeft = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+} as Variants
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+} as Variants
+
+// Mapeamento de ícones
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  '/assets/engf.svg': Code2,
+  '/assets/finan.svg': Banknote,
+  '/assets/ged.svg': FileText,
+  '/assets/back.svg': Server,
+  '/assets/engperf.svg': Zap,
+  '/assets/sis.svg': Network,
 }
