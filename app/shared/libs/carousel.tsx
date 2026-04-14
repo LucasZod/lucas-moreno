@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/app/ui/button'
+import { Button } from '@/app/shared/ui/button'
 import useEmblaCarousel from 'embla-carousel-react'
 import { forwardRef, useCallback } from 'react'
 
@@ -42,7 +42,7 @@ const CarouselContainer = ({ children }: { children: React.ReactNode }) => {
 const CarouselViewport = forwardRef<HTMLDivElement, { children: React.ReactNode; className?: string }>(
   ({ children, className = '' }, ref) => {
     return (
-      <div ref={ref} className={`overflow-x-hidden min-w-dvw md:min-w-full ${className}`}>
+      <div ref={ref} className={`overflow-x-hidden min-w-full ${className}`}>
         {children}
       </div>
     )

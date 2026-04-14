@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
-import { Menu } from './ui/menu'
-import { Footer } from './ui/footer'
+import { Menu } from './shared/ui/menu'
+import { Footer } from './shared/ui/footer'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-plus-jakarta-sans',
