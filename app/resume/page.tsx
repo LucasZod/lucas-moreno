@@ -38,8 +38,11 @@ const Header = () => {
   }
 
   return (
-    <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6">
-      <motion.h1 variants={fadeUp} className="text-slate-800 text-4xl md:text-6xl font-semibold tracking-tight">
+    <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-4">
+      <motion.h1
+        variants={fadeUp}
+        className="text-4xl md:text-7xl font-semibold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-green-accent/85 to-olive-900"
+      >
         {t.title}
       </motion.h1>
       <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed max-w-2xl">
@@ -48,7 +51,7 @@ const Header = () => {
       <motion.button
         variants={fadeUp}
         onClick={handleDownloadPDF}
-        className="inline-flex items-center gap-2 px-4 py-3 bg-[#639922] text-white text-sm font-medium rounded-lg hover:bg-[#537d1d] transition-colors duration-300"
+        className="inline-flex items-center gap-2 px-4 py-3 bg-linear-to-r from-green-accent to-olive-600 text-white text-sm font-medium rounded-lg hover:bg-[#537d1d] transition-colors duration-300"
       >
         <Download size={18} />
         {t.download}
@@ -91,22 +94,22 @@ const CompanyCard = ({ company, index }: { company: Company; index: number }) =>
   const numberFormatted = index.toString().padStart(2, '0')
 
   return (
-    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6">
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-6">
       <CompanyHeader>
-        <span className="text-[#639922] text-4xl md:text-5xl font-bold">{numberFormatted}</span>
+        <span className="text-primary text-4xl md:text-5xl font-bold">{numberFormatted}</span>
         <CompanyInfo>
-          <h3 className="text-slate-900 text-xl md:text-2xl font-semibold">{company.name}</h3>
+          <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">{company.name}</h3>
           <span className="text-slate-500 text-sm">{company.period}</span>
         </CompanyInfo>
       </CompanyHeader>
 
       <div className="space-y-3">
-        <h4 className="text-lg font-semibold text-slate-900">{company.role}</h4>
+        <h4 className="text-lg font-semibold text-slate-800">{company.role}</h4>
         <p className="text-sm text-slate-600 leading-relaxed">{company.description}</p>
       </div>
 
       <AchievementsContainer>
-        <h5 className="font-mono text-xs uppercase tracking-widest text-[#639922]">{t.achievementsLabel}</h5>
+        <h5 className="font-mono text-xs uppercase tracking-widest text-primary">{t.achievementsLabel}</h5>
         <AchievementsList>
           {company.achievements.map((achievement, i) => (
             <AchievementItem key={i}>{achievement}</AchievementItem>
@@ -142,7 +145,7 @@ const AchievementsList = ({ children }: { children: React.ReactNode }) => {
 const AchievementItem = ({ children }: { children: React.ReactNode }) => {
   return (
     <li className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
-      <span className="text-[#639922] mt-1">→</span>
+      <span className="text-primary mt-1">→</span>
       <span>{children}</span>
     </li>
   )
@@ -154,7 +157,7 @@ const StackContainer = ({ children }: { children: React.ReactNode }) => {
 
 const StackChip = ({ children }: { children: React.ReactNode }) => {
   return (
-    <span className="font-mono text-xs px-2.5 py-1 rounded border border-[#639922]/20 text-[#639922] bg-[#639922]/5">
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-primary/20 text-primary bg-primary/5">
       {children}
     </span>
   )
@@ -173,7 +176,7 @@ const AllHighlights = () => {
       variants={staggerContainer}
       className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6"
     >
-      <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold text-center">
+      <motion.h2 variants={fadeUp} className="text-slate-800 text-2xl font-semibold text-center">
         {t.resume.highlightsTitle}
       </motion.h2>
       <motion.div variants={staggerContainer} className="flex gap-1.5 flex-wrap justify-center">
@@ -181,7 +184,7 @@ const AllHighlights = () => {
           <motion.span
             key={highlight}
             variants={fadeUp}
-            className="font-mono text-xs px-2.5 py-1 rounded border border-[#639922]/20 text-[#639922] bg-[#639922]/5"
+            className="font-mono text-xs px-2.5 py-1 rounded border border-primary/20 text-primary bg-primary/5"
           >
             {highlight}
           </motion.span>

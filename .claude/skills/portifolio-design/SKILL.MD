@@ -85,7 +85,7 @@ export const staggerContainer = {
 Estrutura limpa e harmônica, nesta ordem:
 
 1. Label de contexto: `font-mono text-[10px] uppercase tracking-widest text-slate-400`
-2. Título do projeto: `text-[15px] font-medium text-slate-900 mt-1`
+2. Título do projeto: `text-[15px] font-medium text-slate-800 mt-1`
 3. Descrição: `text-[13px] text-slate-500 leading-relaxed mt-2` — máx 2 linhas
 4. Tags: `flex gap-1.5 mt-4`, cada tag `font-mono text-[11px] px-2 py-0.5 rounded border border-slate-200 text-slate-400`
    Sem ícones decorativos, sem métricas inventadas, sem separadores desnecessários.
@@ -158,7 +158,7 @@ const Tag = () => (
 )
 
 const Heading = () => (
-  <motion.h1 variants={fadeUp} className="text-4xl font-semibold text-slate-900">
+  <motion.h1 variants={fadeUp} className="text-4xl font-semibold text-slate-800">
     Lucas Moreno
   </motion.h1>
 )

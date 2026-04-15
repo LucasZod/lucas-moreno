@@ -33,7 +33,10 @@ const Header = () => {
 
   return (
     <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6 md:px-30 px-6">
-      <motion.h1 variants={fadeUp} className="text-slate-800 text-4xl md:text-6xl font-semibold tracking-tight">
+      <motion.h1
+        variants={fadeUp}
+        className="text-4xl md:text-7xl font-semibold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-green-accent/85 to-olive-900"
+      >
         {t.title}
       </motion.h1>
       <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed max-w-2xl">
@@ -81,12 +84,12 @@ const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) =>
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6 max-w-7xl mx-auto"
+      className="bg-slate-50 border border-green-accent/20 md:rounded-xl p-6 space-y-6 max-w-7xl mx-auto"
     >
       <PatternHeader>
-        <span className="text-[#639922] text-3xl md:text-4xl font-bold">{numberFormatted}</span>
+        <span className="text-primary text-3xl md:text-4xl font-bold">{numberFormatted}</span>
         <PatternInfo>
-          <h3 className="text-slate-900 text-xl md:text-2xl font-semibold">
+          <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">
             {pattern.category} {pattern.name.toUpperCase()}
           </h3>
         </PatternInfo>
@@ -148,7 +151,7 @@ const PatternSection = ({ children }: { children: React.ReactNode }) => {
 }
 
 const PatternLabel = ({ children }: { children: React.ReactNode }) => {
-  return <span className="font-mono text-xs uppercase tracking-widest text-[#639922]">{children}</span>
+  return <span className="font-mono text-xs uppercase tracking-widest text-primary">{children}</span>
 }
 
 const PatternText = ({ children }: { children: React.ReactNode }) => {
@@ -161,7 +164,7 @@ const BenefitsList = ({ children }: { children: React.ReactNode }) => {
 
 const BenefitChip = ({ children }: { children: React.ReactNode }) => {
   return (
-    <span className="font-mono text-xs px-2.5 py-1 rounded border border-[#639922]/20 text-[#639922] bg-[#639922]/5">
+    <span className="font-mono text-xs px-2.5 py-1 rounded border border-primary/20 text-primary bg-primary/5">
       {children}
     </span>
   )
@@ -180,7 +183,7 @@ const ExpandButton = ({ isExpanded, onClick, label }: ExpandButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full cursor-pointer flex items-center justify-center gap-2 py-3 mt-4 text-[#639922] text-sm font-medium hover:bg-[#639922]/5 transition-all duration-300 rounded-lg group"
+      className="w-full cursor-pointer flex items-center justify-center gap-2 py-3 text-primary text-sm font-medium hover:bg-primary/5 transition-all duration-300 rounded-lg group"
     >
       <span>{isExpanded ? label.viewLess : label.viewMore}</span>
       <ChevronDown size={16} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />

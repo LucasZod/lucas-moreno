@@ -44,7 +44,10 @@ const Title = () => {
       <motion.h3 variants={fadeUpGreeting} className="font-mono text-xs uppercase tracking-widest text-green-accent">
         {t.greeting}
       </motion.h3>
-      <motion.h1 variants={fadeUpTitle} className="text-slate-800 text-4xl md:text-7xl font-semibold tracking-tight">
+      <motion.h1
+        variants={fadeUpTitle}
+        className="text-4xl md:text-7xl font-semibold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-green-accent/85 to-olive-900"
+      >
         {t.name}
       </motion.h1>
     </motion.header>
@@ -119,7 +122,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
   const IconComponent = iconMap[experience.iconSrc] || Code2
 
   return (
-    <motion.div variants={fadeLeft} className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+    <motion.div variants={fadeLeft} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6">
       <ExperienceCardContainer>
         <ExperienceCardHeader>
           <span className="font-mono text-xs uppercase tracking-widest text-green-accent">
@@ -128,7 +131,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
           <IconComponent size={24} className="text-green-accent hover:scale-110 transition-transform duration-300" />
         </ExperienceCardHeader>
         <ExperienceCardContent>
-          <h3 className="text-lg font-semibold text-slate-900">{experience.title}</h3>
+          <h3 className="text-lg font-semibold text-slate-800">{experience.title}</h3>
           <p className="text-sm text-slate-600 leading-relaxed mt-2">{experience.subtitle}</p>
         </ExperienceCardContent>
         <ExperienceCardTags>
@@ -209,7 +212,7 @@ const SkillsHeader = ({ children }: { children: React.ReactNode }) => {
 
 const SkillsTitle = ({ children }: { children: React.ReactNode }) => {
   return (
-    <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold">
+    <motion.h2 variants={fadeUp} className="text-slate-800 text-2xl font-semibold">
       {children}
     </motion.h2>
   )
@@ -233,8 +236,8 @@ const SkillsGrid = ({ children }: { children: React.ReactNode }) => {
 
 const SkillCategory = ({ category }: { category: { title: string; skills: string[] } }) => {
   return (
-    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-5">
-      <h4 className="text-lg font-semibold text-slate-900">{category.title}</h4>
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-5">
+      <h4 className="text-lg font-semibold text-slate-800">{category.title}</h4>
       <SkillCategoryTags>
         {category.skills.map((skill) => (
           <SkillChip key={skill}>{skill}</SkillChip>
@@ -306,7 +309,7 @@ const AboutHeader = ({ children }: { children: React.ReactNode }) => {
 
 const AboutTitle = ({ children }: { children: React.ReactNode }) => {
   return (
-    <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold">
+    <motion.h2 variants={fadeUp} className="text-slate-800 text-2xl font-semibold">
       {children}
     </motion.h2>
   )
@@ -322,7 +325,7 @@ const AboutSubtitle = ({ children }: { children: React.ReactNode }) => {
 
 const AboutCard = ({ children }: { children: React.ReactNode }) => {
   return (
-    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-6">
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-6">
       {children}
     </motion.div>
   )
@@ -391,7 +394,7 @@ const ProjectsHeader = ({ children }: { children: React.ReactNode }) => {
 
 const ProjectsTitle = ({ children }: { children: React.ReactNode }) => {
   return (
-    <motion.h2 variants={fadeUp} className="text-slate-900 text-2xl font-semibold">
+    <motion.h2 variants={fadeUp} className="text-slate-800 text-2xl font-semibold">
       {children}
     </motion.h2>
   )
@@ -432,7 +435,7 @@ interface ProjectLabels {
 
 const ProjectCard = ({ project, labels }: { project: Project; labels: ProjectLabels }) => {
   return (
-    <motion.div variants={fadeUp} className="bg-slate-50 border border-slate-200 rounded-xl p-6 space-y-5">
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-5">
       <ProjectCardHeader>
         <span className="font-mono uppercase tracking-wide text-green-accent">
           {project.number} {project.title}
@@ -525,10 +528,10 @@ const staggerContainer = {
 
 // Mapeamento de ícones
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  '/assets/engf.svg': Code2,
-  '/assets/finan.svg': Banknote,
-  '/assets/ged.svg': FileText,
-  '/assets/back.svg': Server,
-  '/assets/engperf.svg': Zap,
-  '/assets/sis.svg': Network,
+  codeIcon: Code2,
+  finanIcon: Banknote,
+  gedIcon: FileText,
+  archIcon: Server,
+  engPerfIcon: Zap,
+  sisIcon: Network,
 }
