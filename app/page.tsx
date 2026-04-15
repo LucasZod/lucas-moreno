@@ -41,10 +41,10 @@ const Title = () => {
 
   return (
     <motion.header key={language} initial="hidden" animate="visible" variants={staggerContainer} className="space-y-3">
-      <motion.span variants={fadeUp} className="font-mono text-xs uppercase tracking-widest text-green-accent">
+      <motion.h3 variants={fadeUpGreeting} className="font-mono text-xs uppercase tracking-widest text-green-accent">
         {t.greeting}
-      </motion.span>
-      <motion.h1 variants={fadeUp} className="text-slate-800 text-4xl md:text-7xl font-semibold tracking-tight">
+      </motion.h3>
+      <motion.h1 variants={fadeUpTitle} className="text-slate-800 text-4xl md:text-7xl font-semibold tracking-tight">
         {t.name}
       </motion.h1>
     </motion.header>
@@ -125,7 +125,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
           <span className="font-mono text-xs uppercase tracking-widest text-green-accent">
             {experience.headerTitle}
           </span>
-          <IconComponent size={24} className="text-green-accent" />
+          <IconComponent size={24} className="text-green-accent hover:scale-110 transition-transform duration-300" />
         </ExperienceCardHeader>
         <ExperienceCardContent>
           <h3 className="text-lg font-semibold text-slate-900">{experience.title}</h3>
@@ -498,6 +498,16 @@ const ProjectChip = ({ children }: { children: React.ReactNode }) => {
 }
 
 // Variantes de animação
+const fadeUpTitle = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 2, ease: [0.1, 0.25, 0.1, 1] } },
+} as Variants
+
+const fadeUpGreeting = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] } },
+} as Variants
+
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },

@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <motion.header initial="hidden" animate="visible" variants={staggerContainer} className="space-y-6">
-      <motion.h1 variants={fadeUp} className="text-slate-900 text-4xl md:text-6xl font-semibold tracking-tight">
+      <motion.h1 variants={fadeUp} className="text-slate-800 text-4xl md:text-6xl font-semibold tracking-tight">
         {t.title}
       </motion.h1>
       <motion.p variants={fadeUp} className="text-base text-slate-600 leading-relaxed max-w-2xl">

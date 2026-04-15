@@ -51,7 +51,10 @@ const Logo = () => {
   return (
     <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
       <Link href="/" className="inline-flex items-center gap-2 cursor-pointer">
-        <CodeXml size={24} className="text-white" />
+        <CodeXml
+          size={24}
+          className="text-white hover:translate-x-0.5 hover:translate-y-0.5 transition-transform duration-300"
+        />
       </Link>
     </motion.div>
   )
