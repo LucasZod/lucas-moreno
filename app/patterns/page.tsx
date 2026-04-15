@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, Variants } from 'framer-motion'
+import { motion, Variants, AnimatePresence } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -20,7 +20,7 @@ export default function Patterns() {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <main className="min-h-dvh bg-[#F8F7F4]">{children}</main>
+  return <main className="min-h-dvh bg-app transition-colors duration-300">{children}</main>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -108,21 +108,29 @@ const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) =>
 
       <ExpandButton isExpanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)} label={t} />
 
-      <ExpandedContent isExpanded={isExpanded}>
-        <div className="space-y-6">
-          <PatternSection>
-            <PatternLabel>{t.solution}</PatternLabel>
-            <PatternText>{pattern.solution}</PatternText>
-          </PatternSection>
+      <AnimatePresence initial={false}>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-6 pt-4">
+              <PatternSection>
+                <PatternLabel>{t.solution}</PatternLabel>
+                <PatternText>{pattern.solution}</PatternText>
+              </PatternSection>
 
-          {isExpanded && (
-            <PatternSection>
-              <PatternLabel>{t.example}</PatternLabel>
-              <CodeBlock>{pattern.example}</CodeBlock>
-            </PatternSection>
-          )}
-        </div>
-      </ExpandedContent>
+              <PatternSection>
+                <PatternLabel>{t.example}</PatternLabel>
+                <CodeBlock>{pattern.example}</CodeBlock>
+              </PatternSection>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
@@ -177,16 +185,6 @@ const ExpandButton = ({ isExpanded, onClick, label }: ExpandButtonProps) => {
       <span>{isExpanded ? label.viewLess : label.viewMore}</span>
       <ChevronDown size={16} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
     </button>
-  )
-}
-
-const ExpandedContent = ({ children, isExpanded }: { children: React.ReactNode; isExpanded: boolean }) => {
-  return (
-    <div
-      className={`overflow-hidden transition-all duration-400 ease-in-out ${isExpanded ? 'opacity-100' : 'opacity-0'}`}
-    >
-      {children}
-    </div>
   )
 }
 

@@ -23,9 +23,6 @@
   --primary-hover: #537d1d;
 }
 
-@media (prefers-color-scheme: dark) {
-}
-
 [data-theme='dark'] {
   /* Dark mode forçado via atributo (quando implementarmos o toggle) */
   --background: #0f172a;

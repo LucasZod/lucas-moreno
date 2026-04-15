@@ -44,7 +44,7 @@ const Title = () => {
       <motion.span variants={fadeUp} className="font-mono text-xs uppercase tracking-widest text-green-accent">
         {t.greeting}
       </motion.span>
-      <motion.h1 variants={fadeUp} className="text-slate-900 text-4xl md:text-7xl font-semibold tracking-tight">
+      <motion.h1 variants={fadeUp} className="text-slate-800 text-4xl md:text-7xl font-semibold tracking-tight">
         {t.name}
       </motion.h1>
     </motion.header>

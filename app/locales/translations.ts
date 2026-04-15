@@ -45,9 +45,9 @@ export const translations = {
 
     about: {
       title: 'SOBRE MIM',
-      subtitle: 'Desenvolvedor Full Stack com 6 anos de experiência em produto',
+      subtitle: 'Desenvolvedor Full Stack com 7 anos de experiência em produto',
       paragraphs: [
-        'Comecei pelo lado operacional da tecnologia — supervisionando sistemas de GED num dos maiores grupos de mídia do Centro-Oeste. Migrei para desenvolvimento porque queria construir, não só operar. Essa trajetória me ensinou a entender o problema antes de abrir o editor.',
+        'Comecei pelo lado operacional da tecnologia, supervisionando sistemas de GED num dos maiores grupos de mídia do Centro-Oeste. Migrei para desenvolvimento porque queria construir, não só operar. Essa trajetória me ensinou a entender o problema antes de abrir o editor.',
         'Ao longo dos anos passei por logística, fintech, software house e SaaS. Contextos bem diferentes que me ensinaram a adaptar a solução ao problema. Hoje trabalho de ponta a ponta: interfaces modernas no front, APIs robustas no back, com foco em performance, segurança e código que o próximo dev consegue entender.',
         'Aplico DDD, Arquitetura Hexagonal, SOLID e Design Patterns porque tornam o produto mais previsível e o trabalho do time mais sustentável. Não como checklist, mas como estratégia de entrega contínua.'
       ],
@@ -79,7 +79,7 @@ export const translations = {
       items: [
         {
           number: '01',
-          title: 'MARKETPLACE E AGENDAMENTO PARA CFCs — PILOTAR',
+          title: 'MARKETPLACE E AGENDAMENTO PARA CFCs (PILOTAR)',
           problem: 'Agendamentos duplicados em horários de pico e queries do painel administrativo demorando mais de 3 segundos causavam problemas operacionais graves',
           solution: 'Marketplace completo com geolocalização, sistema de agendamento com pessimistic locking para eliminar conflitos, cache Redis para listagens frequentes e SSR estratégico com Next.js para indexação orgânica.',
           stack: ['NestJS', 'Next.js 14/15', 'C#/.NET', 'PostgreSQL', 'Redis', 'GCP Pub/Sub', 'Firebase', 'DDD'],
@@ -88,7 +88,7 @@ export const translations = {
         },
         {
           number: '02',
-          title: 'CONTA DIGITAL E PAGAMENTOS — HYPERPAY',
+          title: 'CONTA DIGITAL E PAGAMENTOS (HYPERPAY)',
           problem: 'Transações falhando silenciosamente por instabilidade em serviços externos e latência alta em períodos de pico comprometiam a confiabilidade da plataforma',
           solution: 'Sistema completo de pagamentos com PIX, boleto e cobranças. Retry com backoff exponencial e dead letter queue para resiliência. Integrações com APIs bancárias, Azure (criptografia) e SERPRO (validação facial).',
           stack: ['NestJS', 'Node.js', 'React', 'TypeScript', 'PostgreSQL', 'Redis', 'Azure', 'SERPRO', 'Event-Driven'],
@@ -97,7 +97,7 @@ export const translations = {
         },
         {
           number: '03',
-          title: 'LATÊNCIA DE CHECKOUT — PILOTAR',
+          title: 'LATÊNCIA DE CHECKOUT (PILOTAR)',
           problem: 'Endpoint de checkout demorando 4 segundos porque misturava operações síncronas e assíncronas no mesmo fluxo, causando abandono de compra',
           solution: 'Separação de responsabilidades com worker assíncrono via GCP Pub/Sub. O endpoint processa o pagamento e retorna imediatamente. Notificações, atualizações e registros acontecem em background.',
           stack: ['NestJS', 'GCP Pub/Sub', 'PostgreSQL', 'Node.js', 'Event-Driven'],
@@ -106,7 +106,7 @@ export const translations = {
         },
         {
           number: '04',
-          title: 'SISTEMA GED CORPORATIVO — AMPPLI',
+          title: 'SISTEMA GED CORPORATIVO (AMPPLI)',
           problem: 'Performance ruim em buscas de documentos com grandes volumes e integrações frágeis com sistemas legados de clientes corporativos',
           solution: 'Otimização de queries com índices estratégicos, refatoração de buscas e camadas de adaptação para integração com APIs legadas sem contratos bem definidos.',
           stack: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'DDD', 'SOLID'],
@@ -115,8 +115,8 @@ export const translations = {
         },
         {
           number: '05',
-          title: 'SSR & SEO — PILOTAR',
-          problem: 'Páginas de listagem de CFCs renderizadas no client side — Google via página em branco, zero indexação orgânica',
+          title: 'SSR & SEO (PILOTAR)',
+          problem: 'Páginas de listagem de CFCs renderizadas no client side. Google via página em branco, zero indexação orgânica',
           solution: 'Migração para SSR com Next.js 14. Páginas de listagem com getServerSideProps para dados dinâmicos, ISR nos perfis individuais de CFC com revalidação periódica.',
           stack: ['Next.js 14/15', 'React', 'TypeScript', 'SSR', 'ISR', 'SEO'],
           impact: 'Páginas passaram a aparecer em buscas regionais sem investimento em mídia paga. Crescimento orgânico da plataforma.',
@@ -134,12 +134,12 @@ export const translations = {
       companies: [
         {
           name: 'Pilotar',
-          period: '2023 — Atual',
+          period: '2023 - Atual',
           role: 'Senior Full Stack Developer',
           description: 'SaaS com mais de 700 CFCs no Brasil. Marketplace completo, agendamentos, geolocalização e painel administrativo.',
           achievements: [
             'Construiu marketplace completo para CFCs com autenticação, pagamentos, geolocalização e mapa interativo',
-            'Implementou SSR estratégico com Next.js 14/15 — páginas passaram a ser indexadas organicamente em buscas regionais',
+            'Implementou SSR estratégico com Next.js 14/15. Páginas passaram a ser indexadas organicamente em buscas regionais',
             'Identificou e resolveu gargalo de latência no checkout: de 4s para menos de 800ms separando operações síncronas e assíncronas com GCP Pub/Sub',
             'Otimizou queries do painel administrativo com índices compostos e paginação server-side: de 3.2s para 800ms',
             'Implementou cache Redis para dados de geolocalização, reduzindo 40% das chamadas à API em horários de pico',
@@ -150,9 +150,9 @@ export const translations = {
         },
         {
           name: 'Hyperdev / HyperPay',
-          period: '2021 — 2023',
+          period: '2021 - 2023',
           role: 'Full Stack Developer',
-          description: 'Conta digital completa com operações financeiras críticas — PIX, boleto, cobranças e transferências.',
+          description: 'Conta digital completa com operações financeiras críticas: PIX, boleto, cobranças e transferências.',
           achievements: [
             'Desenvolveu fluxos completos de pagamento (PIX, boleto, cobranças) com integrações bancárias e validações inteligentes',
             'Implementou retry com backoff exponencial e dead letter queue, reduzindo taxa de erro em transações para abaixo de 0.5%',
@@ -164,11 +164,11 @@ export const translations = {
         },
         {
           name: 'Amppli',
-          period: '2020 — 2021',
+          period: '2020 -2021',
           role: 'Full Stack Developer',
           description: 'Startup focada em gerenciamento eletrônico de documentos (GED) com clientes corporativos de grande porte.',
           achievements: [
-            'Otimizou buscas de documentos com índices estratégicos e refatoração de queries — ganho de ~80% no tempo de resposta',
+            'Otimizou buscas de documentos com índices estratégicos e refatoração de queries -ganho de ~80% no tempo de resposta',
             'Desenvolveu integrações com sistemas legados corporativos, contornando limitações de APIs mal documentadas com adapters robustos',
             'Implementou RBAC (controle de acesso baseado em papéis) para maior segurança e controle de permissões'
           ],
@@ -187,7 +187,7 @@ export const translations = {
         },
         {
           name: 'Grupo Jaime Câmara',
-          period: '2016 — 2019',
+          period: '2016 -2019',
           role: 'Supervisor de TI / GED',
           description: 'Um dos maiores grupos de mídia do Centro-Oeste. Primeiro contato com tecnologia, evolução para liderança.',
           achievements: [
@@ -203,7 +203,7 @@ export const translations = {
         email: 'lucasmorenozod@gmail.com',
         phone: '(62) 9 8163-8156',
         linkedin: 'linkedin.com/in/lucas-mooreno',
-        location: 'Goiânia, GO — Brasil (Remoto)'
+        location: 'Goiânia, GO -Brasil (Remoto)'
       },
       skills: {
         title: 'COMPETÊNCIAS TÉCNICAS',
@@ -242,12 +242,12 @@ export const translations = {
         items: [
           {
             name: 'Victor Ivens',
-            role: 'CTO — HyperPay',
+            role: 'CTO -HyperPay',
             phone: '(62) 9 9991-1222'
           },
           {
             name: 'Rafael Carola',
-            role: 'CEO — Amppli',
+            role: 'CEO -Amppli',
             phone: '(62) 9 8473-5771'
           }
         ]
@@ -256,7 +256,7 @@ export const translations = {
 
     patterns: {
       title: 'DESIGN PATTERNS',
-      subtitle: 'Padrões de arquitetura que aplico em projetos reais — com exemplos do meu dia a dia',
+      subtitle: 'Padrões de arquitetura que aplico em projetos reais -com exemplos do meu dia a dia',
       labels: {
         problem: 'PROBLEMA',
         solution: 'SOLUÇÃO',
@@ -270,8 +270,8 @@ export const translations = {
           category: 'BACKEND',
           name: 'Repository Pattern',
           problem: 'Acoplamento direto entre lógica de negócio e camada de dados',
-          solution: 'Camada de abstração entre domínio e persistência — o domínio define o contrato, a infraestrutura implementa',
-          example: `// Porta (contrato no domínio — não sabe nada de banco)
+          solution: 'Camada de abstração entre domínio e persistência -o domínio define o contrato, a infraestrutura implementa',
+          example: `// Porta (contrato no domínio -não sabe nada de banco)
 interface AgendamentoRepository {
   findById(id: string): Promise<Agendamento | null>
   save(agendamento: Agendamento): Promise<void>
@@ -295,7 +295,7 @@ class PrismaAgendamentoRepository implements AgendamentoRepository {
   }
 }
 
-// Caso de uso — desacoplado do Prisma
+// Caso de uso -desacoplado do Prisma
 class CancelarAgendamentoUseCase {
   constructor(private repo: AgendamentoRepository) {}
 
@@ -313,7 +313,7 @@ class CancelarAgendamentoUseCase {
           category: 'BACKEND',
           name: 'Strategy Pattern',
           problem: 'Múltiplos métodos de pagamento com lógicas completamente diferentes',
-          solution: 'Encapsular cada algoritmo em uma estratégia intercambiável — usado na HyperPay com PIX, boleto e cartão',
+          solution: 'Encapsular cada algoritmo em uma estratégia intercambiável -usado na HyperPay com PIX, boleto e cartão',
           example: `interface PaymentStrategy {
   process(amount: number, data: PaymentData): Promise<PaymentResult>
 }
@@ -344,7 +344,7 @@ class PaymentProcessor {
   }
 }
 
-// Uso — trocar estratégia em runtime
+// Uso -trocar estratégia em runtime
 const processor = new PaymentProcessor()
 processor.setStrategy(new PixStrategy())
 await processor.execute(150, { pixKey: 'email@exemplo.com' })`,
@@ -353,16 +353,16 @@ await processor.execute(150, { pixKey: 'email@exemplo.com' })`,
         {
           category: 'FRONTEND',
           name: 'Composition Pattern',
-          problem: 'Props drilling e componentes acoplados — padrão que uso no dia a dia no React',
+          problem: 'Props drilling e componentes acoplados -padrão que uso no dia a dia no React',
           solution: 'Componente raiz exportado como vitrine, sub-componentes definidos abaixo no mesmo arquivo com responsabilidade única',
-          example: `// Componente raiz — exportado, mostra a estrutura
+          example: `// Componente raiz -exportado, mostra a estrutura
 const Card = ({ children }: { children: React.ReactNode }) => (
   <div className="rounded-lg border border-gray-200 bg-white p-4">
     {children}
   </div>
 )
 
-// Sub-componentes — definidos no mesmo arquivo, SRP
+// Sub-componentes -definidos no mesmo arquivo, SRP
 const Header = ({ children }: { children: React.ReactNode }) => (
   <header className="mb-3 border-b pb-2 font-semibold">
     {children}
@@ -377,15 +377,15 @@ const Footer = ({ children }: { children: React.ReactNode }) => (
   <footer className="mt-3 border-t pt-2">{children}</footer>
 )
 
-// Namespace — API limpa
+// Namespace -API limpa
 Card.Header = Header
 Card.Body = Body
 Card.Footer = Footer
 
-// Uso flexível — sem prop drilling
+// Uso flexível -sem prop drilling
 <Card>
   <Card.Header>Agendamento Confirmado</Card.Header>
-  <Card.Body>Instrutor: João Silva — 14h00</Card.Body>
+  <Card.Body>Instrutor: João Silva -14h00</Card.Body>
   <Card.Footer>
     <button>Cancelar</button>
   </Card.Footer>
@@ -396,7 +396,7 @@ Card.Footer = Footer
           category: 'FRONTEND',
           name: 'Custom Hooks',
           problem: 'Lógica de fetch duplicada em vários componentes',
-          solution: 'Extrair lógica reutilizável em hooks — useEffect e useMemo só quando necessário',
+          solution: 'Extrair lógica reutilizável em hooks -useEffect e useMemo só quando necessário',
           example: `// Hook tipado e reutilizável
 function useAgendamentos(alunoId: string) {
   const [data, setData] = useState<Agendamento[] | null>(null)
@@ -442,9 +442,9 @@ const AgendamentoList = ({ alunoId }: { alunoId: string }) => {
         {
           category: 'BACKEND',
           name: 'Adapter Pattern',
-          problem: 'Integração com múltiplas APIs externas com interfaces completamente diferentes — SERPRO, Azure, gateways de pagamento',
-          solution: 'Adapters que traduzem a interface externa para o contrato do domínio — trocar gateway sem tocar no domínio',
-          example: `// Contrato do domínio — não sabe nada do gateway externo
+          problem: 'Integração com múltiplas APIs externas com interfaces completamente diferentes -SERPRO, Azure, gateways de pagamento',
+          solution: 'Adapters que traduzem a interface externa para o contrato do domínio -trocar gateway sem tocar no domínio',
+          example: `// Contrato do domínio -não sabe nada do gateway externo
 interface PaymentGateway {
   charge(amount: number, data: ChargeData): Promise<ChargeResult>
   refund(transactionId: string): Promise<void>
@@ -492,9 +492,9 @@ const paymentService = new PaymentService(new GatewayAAdapter(clientA))`,
         {
           category: 'BACKEND',
           name: 'Observer / Event-Driven',
-          problem: 'Cancelamento de agendamento precisava disparar SMS, notificar instrutor e processar estorno — tudo acoplado no mesmo método',
+          problem: 'Cancelamento de agendamento precisava disparar SMS, notificar instrutor e processar estorno -tudo acoplado no mesmo método',
           solution: 'Domain Events: o domínio anuncia que algo aconteceu, cada handler reage de forma independente',
-          example: `// Evento de domínio — registro imutável do que aconteceu
+          example: `// Evento de domínio -registro imutável do que aconteceu
 interface AgendamentoCancelado {
   eventId: string
   agendamentoId: string
@@ -504,7 +504,7 @@ interface AgendamentoCancelado {
   canceladoEm: Date
 }
 
-// Domínio publica o evento — não sabe quem vai reagir
+// Domínio publica o evento -não sabe quem vai reagir
 class AgendamentoService {
   constructor(private eventBus: EventBus) {}
 
@@ -513,7 +513,7 @@ class AgendamentoService {
     agendamento.cancelar(motivo)
     await this.repo.save(agendamento)
 
-    // Só anuncia — não chama SMS, não chama financeiro
+    // Só anuncia -não chama SMS, não chama financeiro
     await this.eventBus.publish({
       eventId: generateId(),
       agendamentoId: id,
@@ -525,7 +525,7 @@ class AgendamentoService {
   }
 }
 
-// Handlers independentes — cada um cuida do seu pedaço
+// Handlers independentes -cada um cuida do seu pedaço
 class SmsHandler {
   async handle(event: AgendamentoCancelado) {
     await this.sms.enviar(event.alunoId, \`Agendamento cancelado: \${event.motivo}\`)
@@ -538,7 +538,7 @@ class FinanceiroHandler {
   }
 }
 
-// Nova necessidade? Cria um handler — não toca em nada existente
+// Nova necessidade? Cria um handler -não toca em nada existente
 class RelatorioHandler {
   async handle(event: AgendamentoCancelado) {
     await this.relatorio.registrar(event)
@@ -549,9 +549,9 @@ class RelatorioHandler {
         {
           category: 'ARCHITECTURE',
           name: 'Clean Architecture / Hexagonal',
-          problem: 'Domínio contaminado com detalhes de banco, framework e APIs externas — difícil de testar e de evoluir',
-          solution: 'Domínio no centro, tudo externo se conecta via portas e adapters — o banco não dita as regras de negócio',
-          example: `// DOMAIN — zero dependência externa
+          problem: 'Domínio contaminado com detalhes de banco, framework e APIs externas -difícil de testar e de evoluir',
+          solution: 'Domínio no centro, tudo externo se conecta via portas e adapters -o banco não dita as regras de negócio',
+          example: `// DOMAIN -zero dependência externa
 class Agendamento {
   private status: 'ativo' | 'cancelado' = 'ativo'
   private eventos: DomainEvent[] = []
@@ -577,7 +577,7 @@ interface AgendamentoRepository {
   save(agendamento: Agendamento): Promise<void>
 }
 
-// APPLICATION — orquestra, não tem regra de negócio
+// APPLICATION -orquestra, não tem regra de negócio
 class CancelarAgendamentoUseCase {
   constructor(
     private repo: AgendamentoRepository,
@@ -594,13 +594,13 @@ class CancelarAgendamentoUseCase {
   }
 }
 
-// INFRASTRUCTURE — adapter de saída (sabe do Prisma)
+// INFRASTRUCTURE -adapter de saída (sabe do Prisma)
 class PrismaAgendamentoRepository implements AgendamentoRepository {
   async findById(id: string) { /* ... */ }
   async save(a: Agendamento) { /* ... */ }
 }
 
-// PRESENTATION — adapter de entrada (sabe do HTTP)
+// PRESENTATION -adapter de entrada (sabe do HTTP)
 class AgendamentoController {
   async cancelar(req: Request, res: Response) {
     await this.useCase.execute(req.params.id, req.body.motivo)
@@ -611,10 +611,10 @@ class AgendamentoController {
         },
         {
           category: 'ARCHITECTURE',
-          name: 'DDD — Aggregates & Value Objects',
-          problem: 'Regras de negócio espalhadas em services e controllers — validação de CPF em 5 lugares diferentes',
+          name: 'DDD -Aggregates & Value Objects',
+          problem: 'Regras de negócio espalhadas em services e controllers -validação de CPF em 5 lugares diferentes',
           solution: 'Value Objects garantem invariantes, Aggregates protegem consistência interna do domínio',
-          example: `// Value Object — imutável, validação própria, igualdade por valor
+          example: `// Value Object -imutável, validação própria, igualdade por valor
 class Cpf {
   readonly numero: string
 
@@ -633,7 +633,7 @@ class Cpf {
   }
 }
 
-// Aggregate Root — ponto de entrada, garante consistência
+// Aggregate Root -ponto de entrada, garante consistência
 class Aluno {
   private agendamentos: Agendamento[] = []
 
@@ -666,9 +666,9 @@ aluno.realizarAgendamento(horario1, instrutor) // DomainError`,
         {
           category: 'ARCHITECTURE',
           name: 'SOLID no Frontend',
-          problem: 'Componentes com múltiplas responsabilidades — busca dados, valida, formata e renderiza tudo junto',
+          problem: 'Componentes com múltiplas responsabilidades -busca dados, valida, formata e renderiza tudo junto',
           solution: 'Aplicar SRP e DIP no React: custom hook para lógica, componente para apresentação, interface para abstração',
-          example: `// S — Single Responsibility
+          example: `// S -Single Responsibility
 // ❌ Componente faz demais
 const AgendamentoPage = () => {
   const [data, setData] = useState([])
@@ -686,7 +686,7 @@ const useAgendamentos = (alunoId: string) => {
 
 const AgendamentoCard = ({ agendamento }: { agendamento: Agendamento }) => (
   // só apresentação
-  <div>{agendamento.instrutor} — {formatDate(agendamento.data)}</div>
+  <div>{agendamento.instrutor} -{formatDate(agendamento.data)}</div>
 )
 
 const AgendamentoPage = ({ alunoId }: { alunoId: string }) => {
@@ -694,7 +694,7 @@ const AgendamentoPage = ({ alunoId }: { alunoId: string }) => {
   return <>{agendamentos.map(a => <AgendamentoCard key={a.id} agendamento={a} />)}</>
 }
 
-// D — Dependency Inversion
+// D -Dependency Inversion
 interface AgendamentoService {
   findByAluno(alunoId: string): Promise<Agendamento[]>
 }
@@ -711,21 +711,21 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
     experiences: [
       {
         headerTitle: '01 // MARKETPLACE & AGENDAMENTO',
-        title: 'SISTEMAS PARA CFCs — PILOTAR',
+        title: 'SISTEMAS PARA CFCs -PILOTAR',
         subtitle: 'Marketplace completo com geolocalização, agendamento inteligente com locking pessimista para eliminar conflitos e painel administrativo. Latência de checkout de 4s para 800ms. Queries de 3.2s para 800ms. Cache Redis reduziu 40% das chamadas em pico.',
         chip: ['NESTJS', 'NEXT.JS 14/15', 'C#/.NET', 'REDIS', 'DDD', 'GCP PUB/SUB', 'POSTGRESQL'],
         iconSrc: '/assets/engf.svg'
       },
       {
         headerTitle: '02 // CONTA DIGITAL & FINTECH',
-        title: 'SISTEMA DE PAGAMENTOS — HYPERPAY',
+        title: 'SISTEMA DE PAGAMENTOS -HYPERPAY',
         subtitle: 'Conta digital completa com PIX, boleto e cobranças. Integrações bancárias, Azure e SERPRO. Retry com backoff exponencial e dead letter queue. Taxa de erro abaixo de 0.5%. Latência média abaixo de 1.2s em pico.',
         chip: ['PIX', 'NESTJS', 'REDIS', 'EVENT-DRIVEN', 'AZURE', 'SERPRO', 'POSTGRESQL'],
         iconSrc: '/assets/finan.svg'
       },
       {
         headerTitle: '03 // GED CORPORATIVO',
-        title: 'GESTÃO ELETRÔNICA DE DOCUMENTOS — AMPPLI',
+        title: 'GESTÃO ELETRÔNICA DE DOCUMENTOS -AMPPLI',
         subtitle: 'Sistema completo com upload, versionamento, busca avançada e RBAC. Ganho de ~80% no tempo de resposta com índices estratégicos. Integrações com sistemas legados corporativos via adapters robustos.',
         chip: ['NODE.JS', 'POSTGRESQL', 'REDIS', 'DDD', 'SOLID', 'REACT', 'TYPESCRIPT'],
         iconSrc: '/assets/ged.svg'
@@ -753,7 +753,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
       },
       {
         headerTitle: '07 // PAINEL GESTOR C#/.NET',
-        title: 'SISTEMA ADMINISTRATIVO — PILOTAR',
+        title: 'SISTEMA ADMINISTRATIVO -PILOTAR',
         subtitle: 'Painel completo em C#/.NET para gerenciamento de autoescolas. Agendamentos, gestão de alunos, instrutores, serviços, pacotes de habilitação, relatórios financeiros e controle operacional.',
         chip: ['C#/.NET', 'ENTITY FRAMEWORK', 'POSTGRESQL', 'BACKGROUND SERVICES'],
         iconSrc: '/assets/engf.svg'
@@ -794,7 +794,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
     home: {
       greeting: 'HELLO, MY NAME IS',
       name: 'LUCAS MORENO',
-      subtitle: 'Full Stack Developer with 6 years building products that scale. From marketplace to financial systems, frontend to backend — I write code the team can maintain and the business can trust.',
+      subtitle: 'Full Stack Developer with 7 years building products that scale. From marketplace to financial systems, frontend to backend -I write code the team can maintain and the business can trust.',
       chips: {
         architecture: 'Architecture First',
         performance: 'Performance Driven',
@@ -828,9 +828,9 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
 
     about: {
       title: 'ABOUT ME',
-      subtitle: 'Full Stack Developer with 6 years of product experience',
+      subtitle: 'Full Stack Developer with 7 years of product experience',
       paragraphs: [
-        'I started on the operational side of technology — supervising document management systems at one of the largest media groups in Central Brazil. I moved into development because I wanted to build, not just operate. That journey taught me to understand the problem before opening the editor.',
+        'I started on the operational side of technology -supervising document management systems at one of the largest media groups in Central Brazil. I moved into development because I wanted to build, not just operate. That journey taught me to understand the problem before opening the editor.',
         'Over the years I worked across logistics, fintech, software house and SaaS. Very different contexts that taught me to adapt the solution to the problem. Today I work end-to-end: modern interfaces on the front, robust APIs on the back, focused on performance, security and code the next developer can understand.',
         'I apply DDD, Hexagonal Architecture, SOLID and Design Patterns because they make the product more predictable and the team\'s work more sustainable. Not as a checklist, but as a continuous delivery strategy.'
       ],
@@ -862,7 +862,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
       items: [
         {
           number: '01',
-          title: 'MARKETPLACE AND SCHEDULING FOR DRIVING SCHOOLS — PILOTAR',
+          title: 'MARKETPLACE AND SCHEDULING FOR DRIVING SCHOOLS -PILOTAR',
           problem: 'Duplicate bookings during peak hours and admin panel queries taking over 3 seconds caused serious operational problems',
           solution: 'Complete marketplace with geolocation, scheduling system with pessimistic locking to eliminate conflicts, Redis cache for frequent listings and strategic SSR with Next.js for organic indexing.',
           stack: ['NestJS', 'Next.js 14/15', 'C#/.NET', 'PostgreSQL', 'Redis', 'GCP Pub/Sub', 'Firebase', 'DDD'],
@@ -871,7 +871,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           number: '02',
-          title: 'DIGITAL ACCOUNT AND PAYMENTS — HYPERPAY',
+          title: 'DIGITAL ACCOUNT AND PAYMENTS -HYPERPAY',
           problem: 'Transactions failing silently due to external service instability and high latency during peak periods compromised platform reliability',
           solution: 'Complete payment system with PIX, bank slip and charges. Retry with exponential backoff and dead letter queue for resilience. Integrations with banking APIs, Azure (encryption) and SERPRO (facial validation).',
           stack: ['NestJS', 'Node.js', 'React', 'TypeScript', 'PostgreSQL', 'Redis', 'Azure', 'SERPRO', 'Event-Driven'],
@@ -880,7 +880,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           number: '03',
-          title: 'CHECKOUT LATENCY — PILOTAR',
+          title: 'CHECKOUT LATENCY -PILOTAR',
           problem: 'Checkout endpoint taking 4 seconds because it mixed synchronous and asynchronous operations in the same flow, causing cart abandonment',
           solution: 'Separation of concerns with asynchronous worker via GCP Pub/Sub. The endpoint processes payment and returns immediately. Notifications, updates and logs happen in background.',
           stack: ['NestJS', 'GCP Pub/Sub', 'PostgreSQL', 'Node.js', 'Event-Driven'],
@@ -889,7 +889,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           number: '04',
-          title: 'CORPORATE DMS SYSTEM — AMPPLI',
+          title: 'CORPORATE DMS SYSTEM -AMPPLI',
           problem: 'Poor document search performance with large volumes and fragile integrations with legacy systems from corporate clients',
           solution: 'Query optimization with strategic indexes, search refactoring and adapter layers for integration with legacy APIs without well-defined contracts.',
           stack: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'DDD', 'SOLID'],
@@ -898,8 +898,8 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           number: '05',
-          title: 'SSR & SEO — PILOTAR',
-          problem: 'Driving school listing pages rendered client-side — Google saw a blank page, zero organic indexing',
+          title: 'SSR & SEO -PILOTAR',
+          problem: 'Driving school listing pages rendered client-side -Google saw a blank page, zero organic indexing',
           solution: 'Migration to SSR with Next.js 14. Listing pages with getServerSideProps for dynamic data, ISR on individual CFC profiles with periodic revalidation.',
           stack: ['Next.js 14/15', 'React', 'TypeScript', 'SSR', 'ISR', 'SEO'],
           impact: 'Pages started appearing in regional searches without paid media investment. Organic platform growth.',
@@ -917,12 +917,12 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
       companies: [
         {
           name: 'Pilotar',
-          period: '2023 — Present',
+          period: '2023 -Present',
           role: 'Senior Full Stack Developer',
           description: 'SaaS with over 700 driving schools across Brazil. Complete marketplace, scheduling, geolocation and admin panel.',
           achievements: [
             'Built complete marketplace for driving schools with authentication, payments, geolocation and interactive map',
-            'Implemented strategic SSR with Next.js 14/15 — pages started being organically indexed in regional searches',
+            'Implemented strategic SSR with Next.js 14/15 -pages started being organically indexed in regional searches',
             'Identified and resolved checkout latency bottleneck: from 4s to under 800ms by separating sync and async operations with GCP Pub/Sub',
             'Optimized admin panel queries with composite indexes and server-side pagination: from 3.2s to 800ms',
             'Implemented Redis cache for geolocation data, reducing 40% of API calls during peak hours',
@@ -933,9 +933,9 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           name: 'Hyperdev / HyperPay',
-          period: '2021 — 2023',
+          period: '2021 -2023',
           role: 'Full Stack Developer',
-          description: 'Complete digital account with critical financial operations — PIX, bank slip, charges and transfers.',
+          description: 'Complete digital account with critical financial operations -PIX, bank slip, charges and transfers.',
           achievements: [
             'Developed complete payment flows (PIX, bank slip, charges) with banking integrations and intelligent validations',
             'Implemented retry with exponential backoff and dead letter queue, reducing transaction error rate to below 0.5%',
@@ -947,11 +947,11 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           name: 'Amppli',
-          period: '2020 — 2021',
+          period: '2020 -2021',
           role: 'Full Stack Developer',
           description: 'Startup focused on electronic document management (DMS) with large corporate clients.',
           achievements: [
-            'Optimized document searches with strategic indexes and query refactoring — ~80% improvement in response time',
+            'Optimized document searches with strategic indexes and query refactoring ~80% improvement in response time',
             'Developed integrations with corporate legacy systems, working around poorly documented APIs with robust adapters',
             'Implemented RBAC (role-based access control) for greater security and permission management'
           ],
@@ -970,7 +970,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         },
         {
           name: 'Grupo Jaime Câmara',
-          period: '2016 — 2019',
+          period: '2016 -2019',
           role: 'IT / DMS Supervisor',
           description: 'One of the largest media groups in Central Brazil. First contact with technology, evolution to leadership.',
           achievements: [
@@ -1025,13 +1025,13 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
         items: [
           {
             name: 'Victor Ivens',
-            role: 'CTO — HyperPay',
-            phone: '+55 (62) 9991-1222'
+            role: 'CTO -HyperPay',
+            phone: '+55 (62) 9 9991-1222'
           },
           {
             name: 'Rafael Carola',
-            role: 'CEO — Amppli',
-            phone: '+55 (62) 8473-5771'
+            role: 'CEO -Amppli',
+            phone: '+55 (62) 9 8473-5771'
           }
         ]
       }
@@ -1039,7 +1039,7 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
 
     patterns: {
       title: 'DESIGN PATTERNS',
-      subtitle: 'Architecture patterns I apply in real projects — with examples from my daily work',
+      subtitle: 'Architecture patterns I apply in real projects -with examples from my daily work',
       labels: {
         problem: 'PROBLEM',
         solution: 'SOLUTION',
@@ -1053,8 +1053,8 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
           category: 'BACKEND',
           name: 'Repository Pattern',
           problem: 'Direct coupling between business logic and data layer',
-          solution: 'Abstraction layer between domain and persistence — domain defines the contract, infrastructure implements it',
-          example: `// Port (contract in domain — knows nothing about the database)
+          solution: 'Abstraction layer between domain and persistence -domain defines the contract, infrastructure implements it',
+          example: `// Port (contract in domain -knows nothing about the database)
 interface AgendamentoRepository {
   findById(id: string): Promise<Agendamento | null>
   save(agendamento: Agendamento): Promise<void>
@@ -1076,7 +1076,7 @@ class PrismaAgendamentoRepository implements AgendamentoRepository {
   }
 }
 
-// Use case — decoupled from Prisma
+// Use case -decoupled from Prisma
 class CancelBookingUseCase {
   constructor(private repo: AgendamentoRepository) {}
 
@@ -1094,7 +1094,7 @@ class CancelBookingUseCase {
           category: 'BACKEND',
           name: 'Strategy Pattern',
           problem: 'Multiple payment methods with completely different logic',
-          solution: 'Encapsulate each algorithm in an interchangeable strategy — used at HyperPay with PIX, bank slip and card',
+          solution: 'Encapsulate each algorithm in an interchangeable strategy -used at HyperPay with PIX, bank slip and card',
           example: `interface PaymentStrategy {
   process(amount: number, data: PaymentData): Promise<PaymentResult>
 }
@@ -1159,7 +1159,7 @@ Card.Footer = Footer
 
 <Card>
   <Card.Header>Booking Confirmed</Card.Header>
-  <Card.Body>Instructor: John Silva — 2:00 PM</Card.Body>
+  <Card.Body>Instructor: John Silva -2:00 PM</Card.Body>
   <Card.Footer>
     <button>Cancel</button>
   </Card.Footer>
@@ -1170,7 +1170,7 @@ Card.Footer = Footer
           category: 'FRONTEND',
           name: 'Custom Hooks',
           problem: 'Duplicated fetch logic across multiple components',
-          solution: 'Extract reusable logic into hooks — useEffect and useMemo only when necessary',
+          solution: 'Extract reusable logic into hooks -useEffect and useMemo only when necessary',
           example: `function useBookings(studentId: string) {
   const [data, setData] = useState<Booking[] | null>(null)
   const [loading, setLoading] = useState(true)
@@ -1207,8 +1207,8 @@ const BookingList = ({ studentId }: { studentId: string }) => {
         {
           category: 'BACKEND',
           name: 'Adapter Pattern',
-          problem: 'Integration with multiple external APIs with completely different interfaces — SERPRO, Azure, payment gateways',
-          solution: 'Adapters translate external interface to domain contract — swap gateway without touching domain',
+          problem: 'Integration with multiple external APIs with completely different interfaces -SERPRO, Azure, payment gateways',
+          solution: 'Adapters translate external interface to domain contract -swap gateway without touching domain',
           example: `interface PaymentGateway {
   charge(amount: number, data: ChargeData): Promise<ChargeResult>
   refund(transactionId: string): Promise<void>
@@ -1244,7 +1244,7 @@ const paymentService = new PaymentService(new GatewayAAdapter(clientA))`,
         {
           category: 'BACKEND',
           name: 'Observer / Event-Driven',
-          problem: 'Booking cancellation needed to send SMS, notify instructor and process refund — all coupled in the same method',
+          problem: 'Booking cancellation needed to send SMS, notify instructor and process refund -all coupled in the same method',
           solution: 'Domain Events: domain announces what happened, each handler reacts independently',
           example: `interface BookingCancelled {
   eventId: string
@@ -1288,9 +1288,9 @@ class FinancialHandler {
         {
           category: 'ARCHITECTURE',
           name: 'Clean Architecture / Hexagonal',
-          problem: 'Domain contaminated with database, framework and external API details — hard to test and evolve',
-          solution: 'Domain at the center, everything external connects via ports and adapters — the database doesn\'t dictate business rules',
-          example: `// DOMAIN — zero external dependency
+          problem: 'Domain contaminated with database, framework and external API details -hard to test and evolve',
+          solution: 'Domain at the center, everything external connects via ports and adapters -the database doesn\'t dictate business rules',
+          example: `// DOMAIN -zero external dependency
 class Booking {
   private status: 'active' | 'cancelled' = 'active'
   private events: DomainEvent[] = []
@@ -1316,7 +1316,7 @@ interface BookingRepository {
   save(booking: Booking): Promise<void>
 }
 
-// APPLICATION — orchestrates, no business rules
+// APPLICATION -orchestrates, no business rules
 class CancelBookingUseCase {
   constructor(private repo: BookingRepository, private eventBus: EventBus) {}
 
@@ -1330,10 +1330,10 @@ class CancelBookingUseCase {
   }
 }
 
-// INFRASTRUCTURE — output adapter (knows Prisma)
+// INFRASTRUCTURE -output adapter (knows Prisma)
 class PrismaBookingRepository implements BookingRepository { /* ... */ }
 
-// PRESENTATION — input adapter (knows HTTP)
+// PRESENTATION -input adapter (knows HTTP)
 class BookingController {
   async cancel(req: Request, res: Response) {
     await this.useCase.execute(req.params.id, req.body.reason)
@@ -1344,10 +1344,10 @@ class BookingController {
         },
         {
           category: 'ARCHITECTURE',
-          name: 'DDD — Aggregates & Value Objects',
-          problem: 'Business rules scattered across services and controllers — CPF validation in 5 different places',
+          name: 'DDD -Aggregates & Value Objects',
+          problem: 'Business rules scattered across services and controllers -CPF validation in 5 different places',
           solution: 'Value Objects guarantee invariants, Aggregates protect internal domain consistency',
-          example: `// Value Object — immutable, own validation, equality by value
+          example: `// Value Object -immutable, own validation, equality by value
 class Cpf {
   readonly number: string
 
@@ -1362,7 +1362,7 @@ class Cpf {
   }
 }
 
-// Aggregate Root — entry point, guarantees consistency
+// Aggregate Root -entry point, guarantees consistency
 class Student {
   private bookings: Booking[] = []
 
@@ -1393,9 +1393,9 @@ student.book(slot1, instructor) // DomainError`,
         {
           category: 'ARCHITECTURE',
           name: 'SOLID in Frontend',
-          problem: 'Components with multiple responsibilities — fetches, validates, formats and renders all together',
+          problem: 'Components with multiple responsibilities -fetches, validates, formats and renders all together',
           solution: 'Apply SRP and DIP in React: custom hook for logic, component for presentation, interface for abstraction',
-          example: `// S — Single Responsibility
+          example: `// S -Single Responsibility
 // ❌ Component does too much
 const BookingPage = () => {
   const [data, setData] = useState([])
@@ -1413,7 +1413,7 @@ const useBookings = (studentId: string) => {
 }
 
 const BookingCard = ({ booking }: { booking: Booking }) => (
-  <div>{booking.instructor} — {formatDate(booking.date)}</div>
+  <div>{booking.instructor} -{formatDate(booking.date)}</div>
 )
 
 const BookingPage = ({ studentId }: { studentId: string }) => {
@@ -1421,7 +1421,7 @@ const BookingPage = ({ studentId }: { studentId: string }) => {
   return <>{bookings.map(b => <BookingCard key={b.id} booking={b} />)}</>
 }
 
-// D — Dependency Inversion
+// D -Dependency Inversion
 interface BookingService {
   findByStudent(studentId: string): Promise<Booking[]>
 }
@@ -1437,21 +1437,21 @@ const BookingList = ({ service }: { service: BookingService }) => {
     experiences: [
       {
         headerTitle: '01 // MARKETPLACE & SCHEDULING',
-        title: 'DRIVING SCHOOL SYSTEMS — PILOTAR',
+        title: 'DRIVING SCHOOL SYSTEMS -PILOTAR',
         subtitle: 'Complete marketplace with geolocation, intelligent scheduling with pessimistic locking to eliminate conflicts and admin panel. Checkout latency from 4s to 800ms. Queries from 3.2s to 800ms. Redis cache reduced 40% of API calls at peak.',
         chip: ['NESTJS', 'NEXT.JS 14/15', 'C#/.NET', 'REDIS', 'DDD', 'GCP PUB/SUB', 'POSTGRESQL'],
         iconSrc: '/assets/engf.svg'
       },
       {
         headerTitle: '02 // DIGITAL ACCOUNT & FINTECH',
-        title: 'PAYMENT SYSTEM — HYPERPAY',
+        title: 'PAYMENT SYSTEM -HYPERPAY',
         subtitle: 'Complete digital account with PIX, bank slip and charges. Banking integrations, Azure and SERPRO. Retry with exponential backoff and dead letter queue. Error rate below 0.5%. Average latency below 1.2s at peak.',
         chip: ['PIX', 'NESTJS', 'REDIS', 'EVENT-DRIVEN', 'AZURE', 'SERPRO', 'POSTGRESQL'],
         iconSrc: '/assets/finan.svg'
       },
       {
         headerTitle: '03 // CORPORATE DMS',
-        title: 'ELECTRONIC DOCUMENT MANAGEMENT — AMPPLI',
+        title: 'ELECTRONIC DOCUMENT MANAGEMENT -AMPPLI',
         subtitle: 'Complete system with upload, versioning, advanced search and RBAC. ~80% improvement in response time with strategic indexes. Integrations with corporate legacy systems via robust adapters.',
         chip: ['NODE.JS', 'POSTGRESQL', 'REDIS', 'DDD', 'SOLID', 'REACT', 'TYPESCRIPT'],
         iconSrc: '/assets/ged.svg'
@@ -1479,7 +1479,7 @@ const BookingList = ({ service }: { service: BookingService }) => {
       },
       {
         headerTitle: '07 // ADMIN PANEL C#/.NET',
-        title: 'MANAGEMENT SYSTEM — PILOTAR',
+        title: 'MANAGEMENT SYSTEM -PILOTAR',
         subtitle: 'Complete C#/.NET panel for driving school management. Scheduling, student and instructor management, services, license packages, financial reports and operational control.',
         chip: ['C#/.NET', 'ENTITY FRAMEWORK', 'POSTGRESQL', 'BACKGROUND SERVICES'],
         iconSrc: '/assets/engf.svg'

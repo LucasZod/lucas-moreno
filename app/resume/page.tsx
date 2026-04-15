@@ -3,73 +3,38 @@
 import { motion, Variants } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
-import { forwardRef, useRef } from 'react'
 import React from 'react'
 import { Download } from 'lucide-react'
 
 export default function Resume() {
-  const pdfRef = useRef<HTMLDivElement>(null)
-
   return (
-    <React.Fragment>
-      <Container>
-        <Layout>
-          <Header pdfRef={pdfRef} />
-          <Companies />
-          <AllHighlights />
-        </Layout>
-      </Container>
-      <PDFContent ref={pdfRef} />
-    </React.Fragment>
+    <Container>
+      <Layout>
+        <Header />
+        <Companies />
+        <AllHighlights />
+      </Layout>
+    </Container>
   )
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <main className="min-h-dvh bg-[#F8F7F4]">{children}</main>
+  return <main className="min-h-dvh bg-app transition-colors duration-300">{children}</main>
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return <section className="md:py-24 md:px-30 px-6 py-16 space-y-11">{children}</section>
 }
 
-const Header = ({ pdfRef }: { pdfRef: React.RefObject<HTMLDivElement | null> }) => {
+const Header = () => {
   const { language } = useI18nStore()
   const t = translations[language].resume
 
-  const handleDownloadPDF = async () => {
-    if (!pdfRef.current) return
-
-    try {
-      const html2canvas = (await import('html2canvas')).default
-      const jsPDF = (await import('jspdf')).default
-
-      const canvas = await html2canvas(pdfRef.current, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      })
-
-      const imgData = canvas.toDataURL('image/png')
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      })
-
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = pdf.internal.pageSize.getHeight()
-      const imgWidth = canvas.width
-      const imgHeight = canvas.height
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight)
-      const imgX = (pdfWidth - imgWidth * ratio) / 2
-      const imgY = 0
-
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio)
-      pdf.save('curriculo-lucas-moreno.pdf')
-    } catch (error) {
-      console.error('Erro ao gerar PDF:', error)
-    }
+  const handleDownloadPDF = () => {
+    const link = document.createElement('a')
+    link.href = '/docs/lucas_moreno_cv.pdf'
+    link.download = 'lucas_moreno_cv.pdf'
+    link.click()
   }
 
   return (
@@ -223,171 +188,6 @@ const AllHighlights = () => {
         ))}
       </motion.div>
     </motion.section>
-  )
-}
-
-const PDFContent = forwardRef<HTMLDivElement>((props, ref) => {
-  return (
-    <div
-      ref={ref}
-      style={{
-        position: 'fixed',
-        left: '-9999px',
-        top: '0',
-        backgroundColor: '#ffffff',
-        padding: '20px',
-        color: '#000000',
-        fontFamily: 'Arial, sans-serif',
-      }}
-    >
-      <PDFHeader />
-      <PDFDivider />
-      <PDFExperiences />
-      <PDFDivider />
-      <PDFSkills />
-      <PDFDivider />
-      <PDFEducation />
-      <PDFDivider />
-      <PDFReferences />
-    </div>
-  )
-})
-PDFContent.displayName = 'PDFContent'
-
-const PDFHeader = () => {
-  const { language } = useI18nStore()
-  const contact = translations[language].resume.contact
-
-  return (
-    <div style={{ marginBottom: '24px' }}>
-      <h1 style={{ fontSize: '50px', fontWeight: 'bold', color: '#000000', marginBottom: '12px' }}>{contact.name}</h1>
-      <p style={{ fontSize: '35px', color: '#333333', marginBottom: '12px' }}>{contact.role}</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '35px', color: '#333333' }}>
-        <p>📧 {contact.email}</p>
-        <p>📞 {contact.phone}</p>
-        <p>🔗 {contact.linkedin}</p>
-        <p>📍 {contact.location}</p>
-      </div>
-    </div>
-  )
-}
-
-const PDFDivider = () => {
-  return <div style={{ borderTop: '1px solid #cccccc', margin: '50px 0' }} />
-}
-
-const PDFExperiences = () => {
-  const { language } = useI18nStore()
-  const companies = translations[language].resume.companies
-  const t = translations[language].resume
-  const titleLabel = language === 'pt' ? 'EXPERIÊNCIA PROFISSIONAL' : 'PROFESSIONAL EXPERIENCE'
-
-  return (
-    <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <h2 style={{ fontSize: '30px', fontWeight: 'bold', color: '#000000', marginBottom: '16px' }}>{titleLabel}</h2>
-      {companies.map((company, index) => (
-        <div key={index} style={{ marginBottom: '16px' }}>
-          <div
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}
-          >
-            <div>
-              <h3 style={{ fontSize: '32px', fontWeight: 'bold', color: '#000000' }}>{company.name}</h3>
-              <p style={{ fontSize: '32px', color: '#333333', fontStyle: 'italic' }}>{company.role}</p>
-            </div>
-            <span style={{ fontSize: '32px', color: '#666666' }}>{company.period}</span>
-          </div>
-          <p style={{ fontSize: '30px', color: '#333333', marginBottom: '8px' }}>{company.description}</p>
-          <div style={{ marginLeft: '16px' }}>
-            <p style={{ fontSize: '28px', fontWeight: '600', color: '#222222', marginBottom: '4px' }}>
-              {t.achievementsLabel}:
-            </p>
-            <ul style={{ paddingLeft: '20px', marginBottom: '8px' }}>
-              {company.achievements.map((achievement, i) => (
-                <li key={i} style={{ fontSize: '35px', color: '#333333', marginBottom: '4px' }}>
-                  {achievement}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-const PDFSkills = () => {
-  const { language } = useI18nStore()
-  const skills = translations[language].resume.skills
-
-  return (
-    <div style={{ marginBottom: '16px' }}>
-      <h2 style={{ fontSize: '30px', fontWeight: 'bold', color: '#000000', marginBottom: '12px' }}>{skills.title}</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '32px' }}>
-        <div>
-          <p style={{ fontWeight: '600', color: '#222222', marginBottom: '4px' }}>{skills.languages.title}:</p>
-          <p style={{ color: '#333333' }}>{skills.languages.items.join(', ')}</p>
-        </div>
-        <div>
-          <p style={{ fontWeight: '600', color: '#222222', marginBottom: '4px' }}>{skills.frontend.title}:</p>
-          <p style={{ color: '#333333' }}>{skills.frontend.items.join(', ')}</p>
-        </div>
-        <div>
-          <p style={{ fontWeight: '600', color: '#222222', marginBottom: '4px' }}>{skills.backend.title}:</p>
-          <p style={{ color: '#333333' }}>{skills.backend.items.join(', ')}</p>
-        </div>
-        <div>
-          <p style={{ fontWeight: '600', color: '#222222', marginBottom: '4px' }}>{skills.database.title}:</p>
-          <p style={{ color: '#333333' }}>{skills.database.items.join(', ')}</p>
-        </div>
-        <div>
-          <p style={{ fontWeight: '600', color: '#222222', marginBottom: '4px' }}>{skills.architecture.title}:</p>
-          <p style={{ color: '#333333' }}>{skills.architecture.items.join(', ')}</p>
-        </div>
-        <div>
-          <p style={{ fontWeight: '600', color: '#222222', marginBottom: '4px' }}>{skills.tools.title}:</p>
-          <p style={{ color: '#333333' }}>{skills.tools.items.join(', ')}</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const PDFEducation = () => {
-  const { language } = useI18nStore()
-  const education = translations[language].resume.education
-
-  return (
-    <div style={{ marginBottom: '16px' }}>
-      <h2 style={{ fontSize: '32px', fontWeight: 'bold', color: '#000000', marginBottom: '12px' }}>
-        {education.title}
-      </h2>
-      <div>
-        <p style={{ fontWeight: '600', color: '#222222', fontSize: '32px' }}>{education.institution}</p>
-        <p style={{ fontSize: '32px', color: '#333333' }}>{education.degree}</p>
-      </div>
-    </div>
-  )
-}
-
-const PDFReferences = () => {
-  const { language } = useI18nStore()
-  const references = translations[language].resume.references
-
-  return (
-    <div style={{ marginBottom: '16px' }}>
-      <h2 style={{ fontSize: '32px', fontWeight: 'bold', color: '#000000', marginBottom: '12px' }}>
-        {references.title}
-      </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontSize: '32px' }}>
-        {references.items.map((ref, index) => (
-          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }} key={index}>
-            <p style={{ fontWeight: '600', color: '#222222' }}>{ref.name}</p>
-            <p style={{ color: '#333333' }}>{ref.role}</p>
-            <p style={{ color: '#333333' }}>{ref.phone}</p>
-          </div>
-        ))}
-      </div>
-    </div>
   )
 }
 
