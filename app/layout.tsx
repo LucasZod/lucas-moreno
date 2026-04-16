@@ -15,7 +15,7 @@ const jetBrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://lucasmoreno.dev'),
+  metadataBase: new URL('https://lucasmorenodev.com'),
   title: {
     default: 'Lucas Moreno - Desenvolvedor Fullstack | React, Node.js, NestJS',
     template: '%s | Lucas Moreno',
@@ -49,14 +49,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://lucasmoreno.dev',
+    url: 'https://lucasmorenodev.com',
     siteName: 'Lucas Moreno - Portfolio',
     title: 'Lucas Moreno - Desenvolvedor Fullstack',
     description:
       'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis. React, Node.js, NestJS e C# .NET.',
     images: [
       {
-        url: 'https://lucasmoreno.dev/assets/thumb.png',
+        url: '/assets/thumb.png',
         width: 1200,
         height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     description: 'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis.',
     images: [
       {
-        url: 'https://lucasmoreno.dev/assets/thumb.png',
+        url: '/assets/thumb.png',
         width: 1200,
         height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
