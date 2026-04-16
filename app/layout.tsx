@@ -107,7 +107,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'seu-codigo-google-search-console',
+    google: 'IPlgHyKdAf-deRAvoYkVe-GvALpZVpmUNUVdXjvJuEo',
   },
 }
 
@@ -119,101 +119,113 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${plusJakartaSans.variable} ${jetBrainsMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        {/* JSON-LD Structured Data - Person Schema */}
-        <Script
-          id="person-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Person',
-              name: 'Lucas Moreno',
-              jobTitle: 'Senior Full Stack Developer',
-              description:
-                'Senior Full Stack Developer com 7 anos de experiência em arquitetura de sistemas escaláveis. Especialista em React, Next.js, Node.js, NestJS, TypeScript, DDD e Clean Architecture.',
-              url: 'https://lucasmorenodev.com',
-              image: 'https://lucasmorenodev.com/assets/thumb.png',
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: 'Goiânia',
-                addressRegion: 'GO',
-                addressCountry: 'BR',
-              },
-              knowsAbout: [
-                'React',
-                'Next.js',
-                'Node.js',
-                'NestJS',
-                'TypeScript',
-                'JavaScript',
-                'C# .NET',
-                'Vue.js',
-                'PostgreSQL',
-                'Redis',
-                'Docker',
-                'DDD',
-                'Clean Architecture',
-                'Hexagonal Architecture',
-                'SOLID',
-                'Microsserviços',
-                'Event-Driven Architecture',
-              ],
-              alumniOf: {
-                '@type': 'Organization',
-                name: 'Pontifícia Universidade Católica de Goiás',
-              },
-            }),
-          }}
-        />
-
-        {/* JSON-LD Structured Data - WebSite Schema */}
-        <Script
-          id="website-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: 'Lucas Moreno - Portfolio',
-              description:
-                'Portfolio profissional de Lucas Moreno, Senior Full Stack Developer especializado em React, Node.js, NestJS e arquitetura de software.',
-              url: 'https://lucasmorenodev.com',
-              inLanguage: ['pt-BR', 'en-US'],
-              author: {
-                '@type': 'Person',
-                name: 'Lucas Moreno',
-              },
-              potentialAction: {
-                '@type': 'SearchAction',
-                target: 'https://lucasmorenodev.com/?s={search_term_string}',
-                'query-input': 'required name=search_term_string',
-              },
-            }),
-          }}
-        />
-
-        {/* JSON-LD Structured Data - ProfilePage Schema */}
-        <Script
-          id="profilepage-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'ProfilePage',
-              mainEntity: {
-                '@type': 'Person',
-                name: 'Lucas Moreno',
-                description: 'Senior Full Stack Developer',
-                image: 'https://lucasmorenodev.com/assets/thumb.png',
-              },
-            }),
-          }}
-        />
-
+        <PersonSchema />
+        <WebSiteSchema />
+        <ProfilePageSchema />
         <Menu />
         {children}
         <Footer />
       </body>
     </html>
+  )
+}
+
+const PersonSchema = () => {
+  return (
+    <Script
+      id="person-schema"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Person',
+          name: 'Lucas Moreno',
+          jobTitle: 'Senior Full Stack Developer',
+          description:
+            'Senior Full Stack Developer com 7 anos de experiência em arquitetura de sistemas escaláveis. Especialista em React, Next.js, Node.js, NestJS, TypeScript, DDD e Clean Architecture.',
+          url: 'https://lucasmorenodev.com',
+          image: 'https://lucasmorenodev.com/assets/thumb.png',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Goiânia',
+            addressRegion: 'GO',
+            addressCountry: 'BR',
+          },
+          knowsAbout: [
+            'React',
+            'Next.js',
+            'Node.js',
+            'NestJS',
+            'TypeScript',
+            'JavaScript',
+            'C# .NET',
+            'Vue.js',
+            'PostgreSQL',
+            'Redis',
+            'Docker',
+            'DDD',
+            'Clean Architecture',
+            'Hexagonal Architecture',
+            'SOLID',
+            'Microsserviços',
+            'Event-Driven Architecture',
+          ],
+          alumniOf: {
+            '@type': 'Organization',
+            name: 'Pontifícia Universidade Católica de Goiás',
+          },
+        }),
+      }}
+    />
+  )
+}
+
+const WebSiteSchema = () => {
+  return (
+    <Script
+      id="website-schema"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Lucas Moreno - Portfolio',
+          description:
+            'Portfolio profissional de Lucas Moreno, Senior Full Stack Developer especializado em React, Node.js, NestJS e arquitetura de software.',
+          url: 'https://lucasmorenodev.com',
+          inLanguage: ['pt-BR', 'en-US'],
+          author: {
+            '@type': 'Person',
+            name: 'Lucas Moreno',
+          },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://lucasmorenodev.com/?s={search_term_string}',
+            'query-input': 'required name=search_term_string',
+          },
+        }),
+      }}
+    />
+  )
+}
+
+const ProfilePageSchema = () => {
+  return (
+    <Script
+      id="profilepage-schema"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ProfilePage',
+          mainEntity: {
+            '@type': 'Person',
+            name: 'Lucas Moreno',
+            description: 'Senior Full Stack Developer',
+            image: 'https://lucasmorenodev.com/assets/thumb.png',
+          },
+        }),
+      }}
+    />
   )
 }
