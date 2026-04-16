@@ -271,7 +271,27 @@ export const translations = {
           name: 'Repository Pattern',
           problem: 'Acoplamento direto entre lógica de negócio e camada de dados',
           solution: 'Camada de abstração entre domínio e persistência o domínio define o contrato, a infraestrutura implementa',
-          example: `// Porta (contrato no domínio não sabe nada de banco)
+          example: `// Domain entity, regras de negócio puras
+class Booking {
+  constructor(
+    public id: string,
+    public studentId: string,
+    public status: 'active' | 'cancelled'
+  ) {}
+
+  cancel(reason: string): void {
+    if (this.status === 'cancelled') {
+      throw new Error('Booking already cancelled')
+    }
+    this.status = 'cancelled'
+  }
+
+  toData() {
+    return { id: this.id, studentId: this.studentId, status: this.status }
+  }
+}
+
+// Porta (contrato no domínio não sabe nada de banco)
 interface BookingRepository {
   findById(id: string): Promise<Booking | null>
   save(booking: Booking): Promise<void>
@@ -283,7 +303,7 @@ class PrismaBookingRepository implements BookingRepository {
 
   async findById(id: string): Promise<Booking | null> {
     const data = await this.prisma.booking.findUnique({ where: { id } })
-    return data ? new Booking(data) : null
+    return data ? new Booking(data.id, data.studentId, data.status) : null
   }
 
   async save(booking: Booking): Promise<void> {
@@ -301,7 +321,7 @@ class CancelBookingUseCase {
 
   async execute(id: string, reason: string): Promise<void> {
     const booking = await this.repo.findById(id)
-    if (!booking) throw new Error('Agendamento não encontrado')
+    if (!booking) throw new Error('Booking not found')
 
     booking.cancel(reason) // regra no domínio
     await this.repo.save(booking)
@@ -314,20 +334,37 @@ class CancelBookingUseCase {
           name: 'Strategy Pattern',
           problem: 'Múltiplos métodos de pagamento com lógicas completamente diferentes',
           solution: 'Encapsular cada algoritmo em uma estratégia intercambiável, usado na HyperPay com PIX, boleto e cartão',
-          example: `interface PaymentStrategy {
+          example: `interface PaymentData {
+  pixKey?: string
+  dueDate?: Date
+  cardNumber?: string
+}
+
+interface PaymentResult {
+  success: boolean
+  transactionId: string
+  qrCode?: string
+  barcode?: string
+}
+
+interface PaymentStrategy {
   process(amount: number, data: PaymentData): Promise<PaymentResult>
 }
 
 class PixStrategy implements PaymentStrategy {
+  constructor(private pixGateway: PixGateway) {}
+
   async process(amount: number, data: PaymentData): Promise<PaymentResult> {
-    const qrCode = await this.pixGateway.generateQR(amount, data.pixKey)
+    const qrCode = await this.pixGateway.generateQR(amount, data.pixKey!)
     return { success: true, transactionId: qrCode.id, qrCode: qrCode.code }
   }
 }
 
 class BoletoStrategy implements PaymentStrategy {
+  constructor(private boletoGateway: BoletoGateway) {}
+
   async process(amount: number, data: PaymentData): Promise<PaymentResult> {
-    const boleto = await this.boletoGateway.generate(amount, data.dueDate)
+    const boleto = await this.boletoGateway.generate(amount, data.dueDate!)
     return { success: true, transactionId: boleto.id, barcode: boleto.barcode }
   }
 }
@@ -339,15 +376,20 @@ class PaymentProcessor {
     this.strategy = strategy
   }
 
-  async execute(amount: number, data: PaymentData) {
+  async execute(amount: number, data: PaymentData): Promise<PaymentResult> {
+    if (!this.strategy) throw new Error('Strategy not set')
     return await this.strategy.process(amount, data)
   }
 }
 
 // Uso, trocar estratégia em runtime
 const processor = new PaymentProcessor()
-processor.setStrategy(new PixStrategy())
-await processor.execute(150, { pixKey: 'email@exemplo.com' })`,
+processor.setStrategy(new PixStrategy(pixGateway))
+await processor.execute(150, { pixKey: 'email@exemplo.com' })
+
+// Trocar para boleto
+processor.setStrategy(new BoletoStrategy(boletoGateway))
+await processor.execute(150, { dueDate: new Date() })`,
           benefits: ['Elimina if/else gigante', 'Open/Closed Principle', 'Fácil adicionar novo método de pagamento']
         },
         {
@@ -398,8 +440,8 @@ Card.Footer = Footer
           problem: 'Lógica de fetch duplicada em vários componentes',
           solution: 'Extrair lógica reutilizável em hooks, useEffect e useMemo só quando necessário',
           example: `// Hook tipado e reutilizável
-function useAgendamentos(alunoId: string) {
-  const [data, setData] = useState<Agendamento[] | null>(null)
+function useBookings(studentId: string) {
+  const [data, setData] = useState<Booking[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
@@ -407,14 +449,14 @@ function useAgendamentos(alunoId: string) {
     try {
       setLoading(true)
       setError(null)
-      const result = await agendamentoService.findByAluno(alunoId)
+      const result = await bookingService.findByStudent(studentId)
       setData(result)
     } catch (err) {
       setError(err as Error)
     } finally {
       setLoading(false)
     }
-  }, [alunoId])
+  }, [studentId])
 
   useEffect(() => {
     refetch()
@@ -424,15 +466,15 @@ function useAgendamentos(alunoId: string) {
 }
 
 // Componente focado só em apresentação
-const AgendamentoList = ({ alunoId }: { alunoId: string }) => {
-  const { data, loading, error, refetch } = useAgendamentos(alunoId)
+const BookingList = ({ studentId }: { studentId: string }) => {
+  const { data, loading, error, refetch } = useBookings(studentId)
 
   if (loading) return <Spinner />
   if (error) return <ErrorMessage message={error.message} />
 
   return (
     <div>
-      {data?.map(a => <AgendamentoCard key={a.id} agendamento={a} />)}
+      {data?.map(b => <BookingCard key={b.id} booking={b} />)}
       <button onClick={refetch}>Atualizar</button>
     </div>
   )
@@ -448,6 +490,15 @@ const AgendamentoList = ({ alunoId }: { alunoId: string }) => {
 interface PaymentGateway {
   charge(amount: number, data: ChargeData): Promise<ChargeResult>
   refund(transactionId: string): Promise<void>
+}
+
+interface ChargeData {
+  document: string
+}
+
+interface ChargeResult {
+  success: boolean
+  transactionId: string
 }
 
 // Adapter para gateway A
@@ -473,6 +524,8 @@ class GatewayAAdapter implements PaymentGateway {
 
 // Adapter para gateway B (API completamente diferente)
 class GatewayBAdapter implements PaymentGateway {
+  constructor(private client: GatewayBClient) {}
+
   async charge(amount: number, data: ChargeData): Promise<ChargeResult> {
     const result = await this.client.payment.process({
       amount: amount.toFixed(2), // gateway B usa string
@@ -482,6 +535,10 @@ class GatewayBAdapter implements PaymentGateway {
       success: result.approved,
       transactionId: result.id
     }
+  }
+
+  async refund(transactionId: string): Promise<void> {
+    await this.client.payment.refund(transactionId)
   }
 }
 
@@ -495,55 +552,96 @@ const paymentService = new PaymentService(new GatewayAAdapter(clientA))`,
           problem: 'Cancelamento de agendamento precisava disparar SMS, notificar instrutor e processar estorno, tudo acoplado no mesmo método',
           solution: 'Domain Events: o domínio anuncia que algo aconteceu, cada handler reage de forma independente',
           example: `// Evento de domínio, registro imutável do que aconteceu
-interface AgendamentoCancelado {
+interface BookingCancelled {
   eventId: string
-  agendamentoId: string
-  alunoId: string
-  instrutorId: string
-  motivo: string
-  canceladoEm: Date
+  bookingId: string
+  studentId: string
+  instructorId: string
+  reason: string
+  cancelledAt: Date
+}
+
+// EventBus, gerencia handlers e dispara eventos
+interface EventBus {
+  publish(event: BookingCancelled): Promise<void>
+  subscribe(handler: EventHandler<BookingCancelled>): void
+}
+
+interface EventHandler<T> {
+  handle(event: T): Promise<void>
+}
+
+class InMemoryEventBus implements EventBus {
+  private handlers: EventHandler<BookingCancelled>[] = []
+
+  subscribe(handler: EventHandler<BookingCancelled>): void {
+    this.handlers.push(handler)
+  }
+
+  async publish(event: BookingCancelled): Promise<void> {
+    // Dispara todos os handlers em paralelo
+    await Promise.all(
+      this.handlers.map(handler => handler.handle(event))
+    )
+  }
 }
 
 // Domínio publica o evento, não sabe quem vai reagir
-class AgendamentoService {
-  constructor(private eventBus: EventBus) {}
+class BookingService {
+  constructor(
+    private repo: BookingRepository,
+    private eventBus: EventBus
+  ) {}
 
-  async cancelar(id: string, motivo: string): Promise<void> {
-    const agendamento = await this.repo.findById(id)
-    agendamento.cancelar(motivo)
-    await this.repo.save(agendamento)
+  async cancel(id: string, reason: string): Promise<void> {
+    const booking = await this.repo.findById(id)
+    if (!booking) throw new Error('Booking not found')
+
+    booking.cancel(reason)
+    await this.repo.save(booking)
 
     // Só anuncia, não chama SMS, não chama financeiro
     await this.eventBus.publish({
       eventId: generateId(),
-      agendamentoId: id,
-      alunoId: agendamento.alunoId,
-      instrutorId: agendamento.instrutorId,
-      motivo,
-      canceladoEm: new Date()
+      bookingId: id,
+      studentId: booking.studentId,
+      instructorId: booking.instructorId,
+      reason,
+      cancelledAt: new Date()
     })
   }
 }
 
 // Handlers independentes, cada um cuida do seu pedaço
-class SmsHandler {
-  async handle(event: AgendamentoCancelado) {
-    await this.sms.enviar(event.alunoId, \`Agendamento cancelado: \${event.motivo}\`)
+class SmsHandler implements EventHandler<BookingCancelled> {
+  constructor(private smsService: SmsService) {}
+
+  async handle(event: BookingCancelled) {
+    await this.smsService.send(event.studentId, \`Booking cancelled: \${event.reason}\`)
   }
 }
 
-class FinanceiroHandler {
-  async handle(event: AgendamentoCancelado) {
-    await this.financeiro.processarEstorno(event.agendamentoId)
+class FinancialHandler implements EventHandler<BookingCancelled> {
+  constructor(private financialService: FinancialService) {}
+
+  async handle(event: BookingCancelled) {
+    await this.financialService.processRefund(event.bookingId)
   }
 }
 
-// Nova necessidade? Cria um handler, não toca em nada existente
-class RelatorioHandler {
-  async handle(event: AgendamentoCancelado) {
-    await this.relatorio.registrar(event)
+class ReportHandler implements EventHandler<BookingCancelled> {
+  constructor(private reportService: ReportService) {}
+
+  async handle(event: BookingCancelled) {
+    await this.reportService.register(event)
   }
-}`,
+}
+
+// Configuração, registra os handlers no eventBus
+const eventBus = new InMemoryEventBus()
+eventBus.subscribe(new SmsHandler(smsService))
+eventBus.subscribe(new FinancialHandler(financialService))
+eventBus.subscribe(new ReportHandler(reportService))`,
           benefits: ['Domínio sem dependências externas', 'Adicionar comportamento sem modificar código existente', 'Cada handler testado isoladamente']
         },
         {
@@ -552,59 +650,90 @@ class RelatorioHandler {
           problem: 'Domínio contaminado com detalhes de banco, framework e APIs externas, difícil de testar e de evoluir',
           solution: 'Domínio no centro, tudo externo se conecta via portas e adapters, o banco não dita as regras de negócio',
           example: `// DOMAIN, zero dependência externa
-class Agendamento {
-  private status: 'ativo' | 'cancelado' = 'ativo'
-  private eventos: DomainEvent[] = []
+class Booking {
+  private status: 'active' | 'cancelled' = 'active'
+  private events: DomainEvent[] = []
 
-  cancelar(motivo: string): void {
-    if (this.status === 'cancelado')
-      throw new DomainError('Agendamento já cancelado')
+  constructor(
+    readonly id: string,
+    readonly studentId: string,
+    readonly instructorId: string,
+    readonly slot: TimeSlot
+  ) {}
 
-    this.status = 'cancelado'
-    this.eventos.push(new AgendamentoCancelado(this.id, motivo))
+  cancel(reason: string): void {
+    if (this.status === 'cancelled')
+      throw new DomainError('Booking already cancelled')
+
+    this.status = 'cancelled'
+    this.events.push(new BookingCancelled(this.id, reason))
   }
 
   pullEvents(): DomainEvent[] {
-    const events = [...this.eventos]
-    this.eventos = []
+    const events = [...this.events]
+    this.events = []
     return events
   }
 }
 
 // Porta de saída (interface no domínio)
-interface AgendamentoRepository {
-  findById(id: string): Promise<Agendamento | null>
-  save(agendamento: Agendamento): Promise<void>
+interface BookingRepository {
+  findById(id: string): Promise<Booking | null>
+  save(booking: Booking): Promise<void>
 }
 
 // APPLICATION, orquestra, não tem regra de negócio
-class CancelarAgendamentoUseCase {
+class CancelBookingUseCase {
   constructor(
-    private repo: AgendamentoRepository,
+    private repo: BookingRepository,
     private eventBus: EventBus
   ) {}
 
-  async execute(id: string, motivo: string): Promise<void> {
-    const agendamento = await this.repo.findById(id)
-    agendamento.cancelar(motivo) // regra no domínio
-    await this.repo.save(agendamento)
+  async execute(id: string, reason: string): Promise<void> {
+    const booking = await this.repo.findById(id)
+    if (!booking) throw new Error('Booking not found')
 
-    for (const event of agendamento.pullEvents())
+    booking.cancel(reason) // regra no domínio
+    await this.repo.save(booking)
+
+    for (const event of booking.pullEvents())
       await this.eventBus.publish(event)
   }
 }
 
 // INFRASTRUCTURE, adapter de saída (sabe do Prisma)
-class PrismaAgendamentoRepository implements AgendamentoRepository {
-  async findById(id: string) { /* ... */ }
-  async save(a: Agendamento) { /* ... */ }
+class PrismaBookingRepository implements BookingRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async findById(id: string): Promise<Booking | null> {
+    const data = await this.prisma.booking.findUnique({ where: { id } })
+    return data ? this.toDomain(data) : null
+  }
+
+  async save(booking: Booking): Promise<void> {
+    await this.prisma.booking.update({
+      where: { id: booking.id },
+      data: { status: booking.status }
+    })
+  }
+
+  private toDomain(data: any): Booking {
+    const booking = new Booking(data.id, data.studentId, data.instructorId, data.slot)
+    // Reconstrói o estado interno
+    if (data.status === 'cancelled') {
+      booking['status'] = 'cancelled'
+    }
+    return booking
+  }
 }
 
 // PRESENTATION, adapter de entrada (sabe do HTTP)
-class AgendamentoController {
-  async cancelar(req: Request, res: Response) {
-    await this.useCase.execute(req.params.id, req.body.motivo)
-    res.status(200).json({ message: 'Cancelado com sucesso' })
+class BookingController {
+  constructor(private useCase: CancelBookingUseCase) {}
+
+  async cancel(req: Request, res: Response) {
+    await this.useCase.execute(req.params.id, req.body.reason)
+    res.status(200).json({ message: 'Cancelled successfully' })
   }
 }`,
           benefits: ['Domínio testável sem banco nem HTTP', 'Trocar Prisma por outro ORM sem tocar no domínio', 'Baixo acoplamento entre camadas']
@@ -616,51 +745,79 @@ class AgendamentoController {
           solution: 'Value Objects garantem invariantes, Aggregates protegem consistência interna do domínio',
           example: `// Value Object, imutável, validação própria, igualdade por valor
 class Cpf {
-  readonly numero: string
+  readonly number: string
 
-  constructor(numero: string) {
-    const limpo = numero.replace(/\\D/g, '')
-    if (limpo.length !== 11) throw new DomainError('CPF inválido')
-    this.numero = limpo
+  constructor(number: string) {
+    const clean = number.replace(/\\D/g, '')
+    if (clean.length !== 11) throw new DomainError('Invalid CPF')
+    this.number = clean
   }
 
   equals(other: Cpf): boolean {
-    return this.numero === other.numero
+    return this.number === other.number
   }
 
   format(): string {
-    return this.numero.replace(/(\\d{3})(\\d{3})(\\d{3})(\\d{2})/, '$1.$2.$3-$4')
+    return this.number.replace(/(\\d{3})(\\d{3})(\\d{3})(\\d{2})/, '$1.$2.$3-$4')
   }
+}
+
+// Value Object para representar horário
+class TimeSlot {
+  constructor(readonly start: Date, readonly end: Date) {
+    if (start >= end) throw new DomainError('Invalid time slot')
+  }
+
+  conflictsWith(other: TimeSlot): boolean {
+    return this.start < other.end && other.start < this.end
+  }
+}
+
+// Entity simples
+class Instructor {
+  constructor(readonly id: string, readonly name: string) {}
+}
+
+class Booking {
+  constructor(
+    readonly id: string,
+    readonly studentId: string,
+    readonly slot: TimeSlot,
+    readonly instructor: Instructor
+  ) {}
 }
 
 // Aggregate Root, ponto de entrada, garante consistência
-class Aluno {
-  private agendamentos: Agendamento[] = []
+class Student {
+  private bookings: Booking[] = []
 
   constructor(
     readonly id: string,
-    readonly nome: string,
+    readonly name: string,
     readonly cpf: Cpf // value object
   ) {}
 
-  realizarAgendamento(horario: SlotHorario, instrutor: Instrutor): Agendamento {
-    const conflito = this.agendamentos.find(a =>
-      a.horario.conflitaCom(horario)
+  book(slot: TimeSlot, instructor: Instructor): Booking {
+    const conflict = this.bookings.find(b =>
+      b.slot.conflictsWith(slot)
     )
-    if (conflito) throw new DomainError('Aluno já tem agendamento nesse horário')
+    if (conflict) throw new DomainError('Student already has a booking at this time')
 
-    const agendamento = new Agendamento(this.id, horario, instrutor)
-    this.agendamentos.push(agendamento)
-    return agendamento
+    const booking = new Booking(generateId(), this.id, slot, instructor)
+    this.bookings.push(booking)
+    return booking
   }
 }
 
-// Impossível criar Aluno com CPF inválido
-const aluno = new Aluno('1', 'Lucas', new Cpf('12345678901'))
+// Impossível criar Student com CPF inválido
+const student = new Student('1', 'Lucas', new Cpf('12345678901'))
 
-// Impossível ter agendamento duplicado
-aluno.realizarAgendamento(horario1, instrutor) // OK
-aluno.realizarAgendamento(horario1, instrutor) // DomainError`,
+// Impossível ter booking duplicado
+const slot1 = new TimeSlot(new Date('2024-01-01 14:00'), new Date('2024-01-01 15:00'))
+const instructor = new Instructor('i1', 'João')
+
+student.book(slot1, instructor) // OK
+student.book(slot1, instructor) // DomainError: conflict!`,
           benefits: ['Invariantes garantidas pelo domínio', 'Impossível ter estado inválido', 'Regras no lugar certo']
         },
         {
@@ -670,37 +827,39 @@ aluno.realizarAgendamento(horario1, instrutor) // DomainError`,
           solution: 'Aplicar SRP e DIP no React: custom hook para lógica, componente para apresentação, interface para abstração',
           example: `// S, Single Responsibility
 // ❌ Componente faz demais
-const AgendamentoPage = () => {
+const BookingPage = () => {
   const [data, setData] = useState([])
-  useEffect(() => { fetch('/agendamentos').then(/*...*/) }, [])
+  useEffect(() => { fetch('/bookings').then(/*...*/) }, [])
   // + validação + formatação + renderização
 }
 
 // ✅ Cada um com sua responsabilidade
-const useAgendamentos = (alunoId: string) => {
+const useBookings = (studentId: string) => {
   // só lógica de dados
-  const [agendamentos, setAgendamentos] = useState<Agendamento[]>([])
-  useEffect(() => { agendamentoService.findByAluno(alunoId).then(setAgendamentos) }, [alunoId])
-  return agendamentos
+  const [bookings, setBookings] = useState<Booking[]>([])
+  useEffect(() => {
+    bookingService.findByStudent(studentId).then(setBookings)
+  }, [studentId])
+  return bookings
 }
 
-const AgendamentoCard = ({ agendamento }: { agendamento: Agendamento }) => (
+const BookingCard = ({ booking }: { booking: Booking }) => (
   // só apresentação
-  <div>{agendamento.instrutor} -{formatDate(agendamento.data)}</div>
+  <div>{booking.instructor} - {formatDate(booking.date)}</div>
 )
 
-const AgendamentoPage = ({ alunoId }: { alunoId: string }) => {
-  const agendamentos = useAgendamentos(alunoId) // delega lógica
-  return <>{agendamentos.map(a => <AgendamentoCard key={a.id} agendamento={a} />)}</>
+const BookingPage = ({ studentId }: { studentId: string }) => {
+  const bookings = useBookings(studentId) // delega lógica
+  return <>{bookings.map(b => <BookingCard key={b.id} booking={b} />)}</>
 }
 
 // D, Dependency Inversion
-interface AgendamentoService {
-  findByAluno(alunoId: string): Promise<Agendamento[]>
+interface BookingService {
+  findByStudent(studentId: string): Promise<Booking[]>
 }
 
 // Componente depende da abstração, não da implementação
-const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
+const BookingList = ({ service }: { service: BookingService }) => {
   // funciona com API real ou mock nos testes
 }`,
           benefits: ['Componente testável', 'Lógica reutilizável', 'Fácil de mockar nos testes']
@@ -1054,38 +1213,60 @@ const AgendamentoList = ({ service }: { service: AgendamentoService }) => {
           name: 'Repository Pattern',
           problem: 'Direct coupling between business logic and data layer',
           solution: 'Abstraction layer between domain and persistence, domain defines the contract, infrastructure implements it',
-          example: `// Port (contract in domain, knows nothing about the database)
-interface AgendamentoRepository {
-  findById(id: string): Promise<Agendamento | null>
-  save(agendamento: Agendamento): Promise<void>
+          example: `// Domain entity, pure business rules
+class Booking {
+  constructor(
+    public id: string,
+    public studentId: string,
+    public status: 'active' | 'cancelled'
+  ) {}
+
+  cancel(reason: string): void {
+    if (this.status === 'cancelled') {
+      throw new Error('Booking already cancelled')
+    }
+    this.status = 'cancelled'
+  }
+
+  toData() {
+    return { id: this.id, studentId: this.studentId, status: this.status }
+  }
+}
+
+// Port (contract in domain, knows nothing about the database)
+interface BookingRepository {
+  findById(id: string): Promise<Booking | null>
+  save(booking: Booking): Promise<void>
 }
 
 // Adapter (infrastructure implementation)
-class PrismaAgendamentoRepository implements AgendamentoRepository {
-  async findById(id: string): Promise<Agendamento | null> {
-    const data = await this.prisma.agendamento.findUnique({ where: { id } })
-    return data ? new Agendamento(data) : null
+class PrismaBookingRepository implements BookingRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async findById(id: string): Promise<Booking | null> {
+    const data = await this.prisma.booking.findUnique({ where: { id } })
+    return data ? new Booking(data.id, data.studentId, data.status) : null
   }
 
-  async save(agendamento: Agendamento): Promise<void> {
-    await this.prisma.agendamento.upsert({
-      where: { id: agendamento.id },
-      create: agendamento.toData(),
-      update: agendamento.toData()
+  async save(booking: Booking): Promise<void> {
+    await this.prisma.booking.upsert({
+      where: { id: booking.id },
+      create: booking.toData(),
+      update: booking.toData()
     })
   }
 }
 
 // Use case, decoupled from Prisma
 class CancelBookingUseCase {
-  constructor(private repo: AgendamentoRepository) {}
+  constructor(private repo: BookingRepository) {}
 
   async execute(id: string, reason: string): Promise<void> {
-    const agendamento = await this.repo.findById(id)
-    if (!agendamento) throw new Error('Booking not found')
+    const booking = await this.repo.findById(id)
+    if (!booking) throw new Error('Booking not found')
 
-    agendamento.cancel(reason) // rule in the domain
-    await this.repo.save(agendamento)
+    booking.cancel(reason) // rule in the domain
+    await this.repo.save(booking)
   }
 }`,
           benefits: ['Testability', 'Decoupling', 'Swap database without touching domain']
@@ -1095,20 +1276,37 @@ class CancelBookingUseCase {
           name: 'Strategy Pattern',
           problem: 'Multiple payment methods with completely different logic',
           solution: 'Encapsulate each algorithm in an interchangeable strategy, used at HyperPay with PIX, bank slip and card',
-          example: `interface PaymentStrategy {
+          example: `interface PaymentData {
+  pixKey?: string
+  dueDate?: Date
+  cardNumber?: string
+}
+
+interface PaymentResult {
+  success: boolean
+  transactionId: string
+  qrCode?: string
+  barcode?: string
+}
+
+interface PaymentStrategy {
   process(amount: number, data: PaymentData): Promise<PaymentResult>
 }
 
 class PixStrategy implements PaymentStrategy {
+  constructor(private pixGateway: PixGateway) {}
+
   async process(amount: number, data: PaymentData): Promise<PaymentResult> {
-    const qrCode = await this.pixGateway.generateQR(amount, data.pixKey)
+    const qrCode = await this.pixGateway.generateQR(amount, data.pixKey!)
     return { success: true, transactionId: qrCode.id, qrCode: qrCode.code }
   }
 }
 
 class BoletoStrategy implements PaymentStrategy {
+  constructor(private boletoGateway: BoletoGateway) {}
+
   async process(amount: number, data: PaymentData): Promise<PaymentResult> {
-    const boleto = await this.boletoGateway.generate(amount, data.dueDate)
+    const boleto = await this.boletoGateway.generate(amount, data.dueDate!)
     return { success: true, transactionId: boleto.id, barcode: boleto.barcode }
   }
 }
@@ -1120,14 +1318,20 @@ class PaymentProcessor {
     this.strategy = strategy
   }
 
-  async execute(amount: number, data: PaymentData) {
+  async execute(amount: number, data: PaymentData): Promise<PaymentResult> {
+    if (!this.strategy) throw new Error('Strategy not set')
     return await this.strategy.process(amount, data)
   }
 }
 
+// Usage, swap strategy at runtime
 const processor = new PaymentProcessor()
-processor.setStrategy(new PixStrategy())
-await processor.execute(150, { pixKey: 'email@example.com' })`,
+processor.setStrategy(new PixStrategy(pixGateway))
+await processor.execute(150, { pixKey: 'email@example.com' })
+
+// Switch to boleto
+processor.setStrategy(new BoletoStrategy(boletoGateway))
+await processor.execute(150, { dueDate: new Date() })`,
           benefits: ['Eliminates giant if/else', 'Open/Closed Principle', 'Easy to add new payment method']
         },
         {
@@ -1214,7 +1418,18 @@ const BookingList = ({ studentId }: { studentId: string }) => {
   refund(transactionId: string): Promise<void>
 }
 
+interface ChargeData {
+  document: string
+}
+
+interface ChargeResult {
+  success: boolean
+  transactionId: string
+}
+
 class GatewayAAdapter implements PaymentGateway {
+  constructor(private client: GatewayAClient) {}
+
   async charge(amount: number, data: ChargeData): Promise<ChargeResult> {
     const response = await this.client.createCharge({
       valor: amount * 100,
@@ -1225,15 +1440,25 @@ class GatewayAAdapter implements PaymentGateway {
       transactionId: response.code
     }
   }
+
+  async refund(transactionId: string): Promise<void> {
+    await this.client.estornar({ codigo: transactionId })
+  }
 }
 
 class GatewayBAdapter implements PaymentGateway {
+  constructor(private client: GatewayBClient) {}
+
   async charge(amount: number, data: ChargeData): Promise<ChargeResult> {
     const result = await this.client.payment.process({
       amount: amount.toFixed(2),
       cpf: data.document
     })
     return { success: result.approved, transactionId: result.id }
+  }
+
+  async refund(transactionId: string): Promise<void> {
+    await this.client.payment.refund(transactionId)
   }
 }
 
@@ -1246,7 +1471,8 @@ const paymentService = new PaymentService(new GatewayAAdapter(clientA))`,
           name: 'Observer / Event-Driven',
           problem: 'Booking cancellation needed to send SMS, notify instructor and process refund, all coupled in the same method',
           solution: 'Domain Events: domain announces what happened, each handler reacts independently',
-          example: `interface BookingCancelled {
+          example: `// Domain event, immutable record of what happened
+interface BookingCancelled {
   eventId: string
   bookingId: string
   studentId: string
@@ -1255,12 +1481,46 @@ const paymentService = new PaymentService(new GatewayAAdapter(clientA))`,
   cancelledAt: Date
 }
 
+// EventBus, manages handlers and dispatches events
+interface EventBus {
+  publish(event: BookingCancelled): Promise<void>
+  subscribe(handler: EventHandler<BookingCancelled>): void
+}
+
+interface EventHandler<T> {
+  handle(event: T): Promise<void>
+}
+
+class InMemoryEventBus implements EventBus {
+  private handlers: EventHandler<BookingCancelled>[] = []
+
+  subscribe(handler: EventHandler<BookingCancelled>): void {
+    this.handlers.push(handler)
+  }
+
+  async publish(event: BookingCancelled): Promise<void> {
+    // Triggers all handlers in parallel
+    await Promise.all(
+      this.handlers.map(handler => handler.handle(event))
+    )
+  }
+}
+
+// Domain publishes event, doesn't know who will react
 class BookingService {
+  constructor(
+    private repo: BookingRepository,
+    private eventBus: EventBus
+  ) {}
+
   async cancel(id: string, reason: string): Promise<void> {
     const booking = await this.repo.findById(id)
+    if (!booking) throw new Error('Booking not found')
+
     booking.cancel(reason)
     await this.repo.save(booking)
 
+    // Just announces, doesn't call SMS or financial
     await this.eventBus.publish({
       eventId: generateId(),
       bookingId: id,
@@ -1272,17 +1532,36 @@ class BookingService {
   }
 }
 
-class SmsHandler {
+// Independent handlers, each one handles its piece
+class SmsHandler implements EventHandler<BookingCancelled> {
+  constructor(private smsService: SmsService) {}
+
   async handle(event: BookingCancelled) {
-    await this.sms.send(event.studentId, \`Booking cancelled: \${event.reason}\`)
+    await this.smsService.send(event.studentId, \`Booking cancelled: \${event.reason}\`)
   }
 }
 
-class FinancialHandler {
+class FinancialHandler implements EventHandler<BookingCancelled> {
+  constructor(private financialService: FinancialService) {}
+
   async handle(event: BookingCancelled) {
-    await this.financial.processRefund(event.bookingId)
+    await this.financialService.processRefund(event.bookingId)
   }
-}`,
+}
+
+class ReportHandler implements EventHandler<BookingCancelled> {
+  constructor(private reportService: ReportService) {}
+
+  async handle(event: BookingCancelled) {
+    await this.reportService.register(event)
+  }
+}
+
+// Setup, registers handlers on eventBus
+const eventBus = new InMemoryEventBus()
+eventBus.subscribe(new SmsHandler(smsService))
+eventBus.subscribe(new FinancialHandler(financialService))
+eventBus.subscribe(new ReportHandler(reportService))`,
           benefits: ['Domain without external dependencies', 'Add behavior without modifying existing code', 'Each handler tested in isolation']
         },
         {
@@ -1294,6 +1573,13 @@ class FinancialHandler {
 class Booking {
   private status: 'active' | 'cancelled' = 'active'
   private events: DomainEvent[] = []
+
+  constructor(
+    readonly id: string,
+    readonly studentId: string,
+    readonly instructorId: string,
+    readonly slot: TimeSlot
+  ) {}
 
   cancel(reason: string): void {
     if (this.status === 'cancelled')
@@ -1318,10 +1604,15 @@ interface BookingRepository {
 
 // APPLICATION, orchestrates, no business rules
 class CancelBookingUseCase {
-  constructor(private repo: BookingRepository, private eventBus: EventBus) {}
+  constructor(
+    private repo: BookingRepository,
+    private eventBus: EventBus
+  ) {}
 
   async execute(id: string, reason: string): Promise<void> {
     const booking = await this.repo.findById(id)
+    if (!booking) throw new Error('Booking not found')
+
     booking.cancel(reason) // rule in domain
     await this.repo.save(booking)
 
@@ -1331,10 +1622,35 @@ class CancelBookingUseCase {
 }
 
 // INFRASTRUCTURE, output adapter (knows Prisma)
-class PrismaBookingRepository implements BookingRepository { /* ... */ }
+class PrismaBookingRepository implements BookingRepository {
+  constructor(private prisma: PrismaClient) {}
+
+  async findById(id: string): Promise<Booking | null> {
+    const data = await this.prisma.booking.findUnique({ where: { id } })
+    return data ? this.toDomain(data) : null
+  }
+
+  async save(booking: Booking): Promise<void> {
+    await this.prisma.booking.update({
+      where: { id: booking.id },
+      data: { status: booking.status }
+    })
+  }
+
+  private toDomain(data: any): Booking {
+    const booking = new Booking(data.id, data.studentId, data.instructorId, data.slot)
+    // Rebuilds internal state
+    if (data.status === 'cancelled') {
+      booking['status'] = 'cancelled'
+    }
+    return booking
+  }
+}
 
 // PRESENTATION, input adapter (knows HTTP)
 class BookingController {
+  constructor(private useCase: CancelBookingUseCase) {}
+
   async cancel(req: Request, res: Response) {
     await this.useCase.execute(req.params.id, req.body.reason)
     res.status(200).json({ message: 'Cancelled successfully' })
@@ -1360,6 +1676,35 @@ class Cpf {
   equals(other: Cpf): boolean {
     return this.number === other.number
   }
+
+  format(): string {
+    return this.number.replace(/(\\d{3})(\\d{3})(\\d{3})(\\d{2})/, '$1.$2.$3-$4')
+  }
+}
+
+// Value Object to represent time slot
+class TimeSlot {
+  constructor(readonly start: Date, readonly end: Date) {
+    if (start >= end) throw new DomainError('Invalid time slot')
+  }
+
+  conflictsWith(other: TimeSlot): boolean {
+    return this.start < other.end && other.start < this.end
+  }
+}
+
+// Simple entity
+class Instructor {
+  constructor(readonly id: string, readonly name: string) {}
+}
+
+class Booking {
+  constructor(
+    readonly id: string,
+    readonly studentId: string,
+    readonly slot: TimeSlot,
+    readonly instructor: Instructor
+  ) {}
 }
 
 // Aggregate Root, entry point, guarantees consistency
@@ -1373,10 +1718,12 @@ class Student {
   ) {}
 
   book(slot: TimeSlot, instructor: Instructor): Booking {
-    const conflict = this.bookings.find(b => b.slot.conflictsWith(slot))
+    const conflict = this.bookings.find(b =>
+      b.slot.conflictsWith(slot)
+    )
     if (conflict) throw new DomainError('Student already has a booking at this time')
 
-    const booking = new Booking(this.id, slot, instructor)
+    const booking = new Booking(generateId(), this.id, slot, instructor)
     this.bookings.push(booking)
     return booking
   }
@@ -1386,8 +1733,11 @@ class Student {
 const student = new Student('1', 'Lucas', new Cpf('12345678901'))
 
 // Impossible to have duplicate booking
+const slot1 = new TimeSlot(new Date('2024-01-01 14:00'), new Date('2024-01-01 15:00'))
+const instructor = new Instructor('i1', 'João')
+
 student.book(slot1, instructor) // OK
-student.book(slot1, instructor) // DomainError`,
+student.book(slot1, instructor) // DomainError: conflict!`,
           benefits: ['Invariants guaranteed by domain', 'Impossible to have invalid state', 'Rules in the right place']
         },
         {

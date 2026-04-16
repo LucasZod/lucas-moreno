@@ -84,32 +84,33 @@ const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) =>
   return (
     <motion.div
       variants={fadeUp}
-      className="bg-slate-50 border border-green-accent/20 md:rounded-xl p-6 space-y-6 max-w-7xl mx-auto"
+      className="bg-slate-50 border border-green-accent/20 md:rounded-xl space-y-6 max-w-7xl mx-auto py-6"
     >
       <PatternHeader>
-        <span className="text-primary text-3xl md:text-4xl font-bold">{numberFormatted}</span>
+        <PatternNumber>{numberFormatted}</PatternNumber>
         <PatternInfo>
-          <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">
+          <PatternTitle>
             {pattern.category} {pattern.name.toUpperCase()}
-          </h3>
+          </PatternTitle>
         </PatternInfo>
       </PatternHeader>
+      <PatternLayout>
+        <PatternSection>
+          <PatternLabel>{t.problem}</PatternLabel>
+          <PatternText>{pattern.problem}</PatternText>
+        </PatternSection>
 
-      <PatternSection>
-        <PatternLabel>{t.problem}</PatternLabel>
-        <PatternText>{pattern.problem}</PatternText>
-      </PatternSection>
+        <PatternSection>
+          <PatternLabel>{t.benefits}</PatternLabel>
+          <BenefitsList>
+            {pattern.benefits.map((benefit) => (
+              <BenefitChip key={benefit}>{benefit}</BenefitChip>
+            ))}
+          </BenefitsList>
+        </PatternSection>
 
-      <PatternSection>
-        <PatternLabel>{t.benefits}</PatternLabel>
-        <BenefitsList>
-          {pattern.benefits.map((benefit) => (
-            <BenefitChip key={benefit}>{benefit}</BenefitChip>
-          ))}
-        </BenefitsList>
-      </PatternSection>
-
-      <ExpandButton isExpanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)} label={t} />
+        <ExpandButton isExpanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)} label={t} />
+      </PatternLayout>
 
       <AnimatePresence initial={false}>
         {isExpanded && (
@@ -118,9 +119,9 @@ const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) =>
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="overflow-hidden"
+            className="overflow-hidden px-1"
           >
-            <div className="space-y-6 pt-4">
+            <ExpandedContent>
               <PatternSection>
                 <PatternLabel>{t.solution}</PatternLabel>
                 <PatternText>{pattern.solution}</PatternText>
@@ -130,7 +131,7 @@ const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) =>
                 <PatternLabel>{t.example}</PatternLabel>
                 <CodeBlock>{pattern.example}</CodeBlock>
               </PatternSection>
-            </div>
+            </ExpandedContent>
           </motion.div>
         )}
       </AnimatePresence>
@@ -139,11 +140,27 @@ const PatternCard = ({ pattern, index }: { pattern: Pattern; index: number }) =>
 }
 
 const PatternHeader = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex items-center gap-6">{children}</div>
+  return <div className="flex items-center gap-6 px-6">{children}</div>
 }
 
 const PatternInfo = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex flex-col gap-1">{children}</div>
+}
+
+const PatternNumber = ({ children }: { children: React.ReactNode }) => {
+  return <span className="text-primary text-3xl md:text-4xl font-bold">{children}</span>
+}
+
+const PatternTitle = ({ children }: { children: React.ReactNode }) => {
+  return <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">{children}</h3>
+}
+
+const ExpandedContent = ({ children }: { children: React.ReactNode }) => {
+  return <div className="space-y-6 pt-4 px-1">{children}</div>
+}
+
+const PatternLayout = ({ children }: { children: React.ReactNode }) => {
+  return <div className="px-6 space-y-3">{children}</div>
 }
 
 const PatternSection = ({ children }: { children: React.ReactNode }) => {

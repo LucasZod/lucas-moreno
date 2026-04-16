@@ -96,20 +96,20 @@ const CompanyCard = ({ company, index }: { company: Company; index: number }) =>
   return (
     <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-6">
       <CompanyHeader>
-        <span className="text-primary text-4xl md:text-5xl font-bold">{numberFormatted}</span>
+        <CompanyNumber>{numberFormatted}</CompanyNumber>
         <CompanyInfo>
-          <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">{company.name}</h3>
-          <span className="text-slate-500 text-sm">{company.period}</span>
+          <CompanyName>{company.name}</CompanyName>
+          <CompanyPeriod>{company.period}</CompanyPeriod>
         </CompanyInfo>
       </CompanyHeader>
 
-      <div className="space-y-3">
-        <h4 className="text-lg font-semibold text-slate-800">{company.role}</h4>
-        <p className="text-sm text-slate-600 leading-relaxed">{company.description}</p>
-      </div>
+      <CompanyRoleDescription>
+        <RoleTitle>{company.role}</RoleTitle>
+        <RoleDescription>{company.description}</RoleDescription>
+      </CompanyRoleDescription>
 
       <AchievementsContainer>
-        <h5 className="font-mono text-xs uppercase tracking-widest text-primary">{t.achievementsLabel}</h5>
+        <AchievementLabel>{t.achievementsLabel}</AchievementLabel>
         <AchievementsList>
           {company.achievements.map((achievement, i) => (
             <AchievementItem key={i}>{achievement}</AchievementItem>
@@ -134,8 +134,36 @@ const CompanyInfo = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex flex-col gap-1">{children}</div>
 }
 
+const CompanyNumber = ({ children }: { children: React.ReactNode }) => {
+  return <span className="text-primary text-4xl md:text-5xl font-bold">{children}</span>
+}
+
+const CompanyName = ({ children }: { children: React.ReactNode }) => {
+  return <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">{children}</h3>
+}
+
+const CompanyPeriod = ({ children }: { children: React.ReactNode }) => {
+  return <span className="text-slate-500 text-sm">{children}</span>
+}
+
+const CompanyRoleDescription = ({ children }: { children: React.ReactNode }) => {
+  return <div className="space-y-3">{children}</div>
+}
+
+const RoleTitle = ({ children }: { children: React.ReactNode }) => {
+  return <h4 className="text-lg font-semibold text-slate-800">{children}</h4>
+}
+
+const RoleDescription = ({ children }: { children: React.ReactNode }) => {
+  return <p className="text-sm text-slate-600 leading-relaxed">{children}</p>
+}
+
 const AchievementsContainer = ({ children }: { children: React.ReactNode }) => {
   return <div className="space-y-3">{children}</div>
+}
+
+const AchievementLabel = ({ children }: { children: React.ReactNode }) => {
+  return <h5 className="font-mono text-xs uppercase tracking-widest text-primary">{children}</h5>
 }
 
 const AchievementsList = ({ children }: { children: React.ReactNode }) => {

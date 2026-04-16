@@ -125,14 +125,12 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
     <motion.div variants={fadeLeft} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6">
       <ExperienceCardContainer>
         <ExperienceCardHeader>
-          <span className="font-mono text-xs uppercase tracking-widest text-green-accent">
-            {experience.headerTitle}
-          </span>
-          <IconComponent size={24} className="text-green-accent hover:scale-110 transition-transform duration-300" />
+          <ExperienceHeaderLabel>{experience.headerTitle}</ExperienceHeaderLabel>
+          <ExperienceIcon icon={IconComponent} />
         </ExperienceCardHeader>
         <ExperienceCardContent>
-          <h3 className="text-lg font-semibold text-slate-800">{experience.title}</h3>
-          <p className="text-sm text-slate-600 leading-relaxed mt-2">{experience.subtitle}</p>
+          <ExperienceTitle>{experience.title}</ExperienceTitle>
+          <ExperienceSubtitle>{experience.subtitle}</ExperienceSubtitle>
         </ExperienceCardContent>
         <ExperienceCardTags>
           {experience.chip.map((chip) => (
@@ -158,6 +156,26 @@ const ExperienceCardContent = ({ children }: { children: React.ReactNode }) => {
 
 const ExperienceCardTags = ({ children }: { children: React.ReactNode }) => {
   return <div className="flex gap-1.5 flex-wrap">{children}</div>
+}
+
+const ExperienceHeaderLabel = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span className="font-mono text-xs uppercase tracking-widest text-green-accent">
+      {children}
+    </span>
+  )
+}
+
+const ExperienceIcon = ({ icon: Icon }: { icon: React.ComponentType<{ size?: number; className?: string }> }) => {
+  return <Icon size={24} className="text-green-accent hover:scale-110 transition-transform duration-300" />
+}
+
+const ExperienceTitle = ({ children }: { children: React.ReactNode }) => {
+  return <h3 className="text-lg font-semibold text-slate-800">{children}</h3>
+}
+
+const ExperienceSubtitle = ({ children }: { children: React.ReactNode }) => {
+  return <p className="text-sm text-slate-600 leading-relaxed mt-2">{children}</p>
 }
 
 const ExperienceChip = ({ children }: { children: React.ReactNode }) => {
@@ -237,7 +255,7 @@ const SkillsGrid = ({ children }: { children: React.ReactNode }) => {
 const SkillCategory = ({ category }: { category: { title: string; skills: string[] } }) => {
   return (
     <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-5">
-      <h4 className="text-lg font-semibold text-slate-800">{category.title}</h4>
+      <SkillCategoryTitle>{category.title}</SkillCategoryTitle>
       <SkillCategoryTags>
         {category.skills.map((skill) => (
           <SkillChip key={skill}>{skill}</SkillChip>
@@ -245,6 +263,10 @@ const SkillCategory = ({ category }: { category: { title: string; skills: string
       </SkillCategoryTags>
     </motion.div>
   )
+}
+
+const SkillCategoryTitle = ({ children }: { children: React.ReactNode }) => {
+  return <h4 className="text-lg font-semibold text-slate-800">{children}</h4>
 }
 
 const SkillCategoryTags = ({ children }: { children: React.ReactNode }) => {
@@ -437,9 +459,9 @@ const ProjectCard = ({ project, labels }: { project: Project; labels: ProjectLab
   return (
     <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-5">
       <ProjectCardHeader>
-        <span className="font-mono uppercase tracking-wide text-green-accent">
+        <ProjectHeaderTitle>
           {project.number} {project.title}
-        </span>
+        </ProjectHeaderTitle>
       </ProjectCardHeader>
       <ProjectCardContent>
         <ProjectSection>
@@ -470,6 +492,14 @@ const ProjectCard = ({ project, labels }: { project: Project; labels: ProjectLab
 
 const ProjectCardHeader = ({ children }: { children: React.ReactNode }) => {
   return <header>{children}</header>
+}
+
+const ProjectHeaderTitle = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <span className="font-mono uppercase tracking-wide text-green-accent">
+      {children}
+    </span>
+  )
 }
 
 const ProjectCardContent = ({ children }: { children: React.ReactNode }) => {

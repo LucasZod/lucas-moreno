@@ -181,3 +181,148 @@ const Actions = () => (
   </motion.div>
 )
 ```
+
+### Observações estruturais e reaproveitamento
+
+Dentro da vitrine em um componente montando com outros sub-componentes, não deverá ter tags HTML soltas — toda estrutura deve ser encapsulada em sub-componentes, mesmo que sejam simples. Isso mantém a hierarquia visual clara e o código organizado.
+
+Caso tenha uma tag que se repita no código muitas vezes, crie um componente específico para ela, mesmo que seja algo simples como um `<span>` com uma classe. Isso evita repetição e mantém a consistência visual.
+
+Todos componentes devem ser únicos e ter apenas uma responsabilidade. Uma vitrine de componente core igual 'HeroSection' deve ser composta por sub-componentes como 'Tag', 'Heading', 'Role' e 'Actions', cada um responsável por uma parte específica da UI. Nunca colocar tags HTML soltas dentro do componente principal, isso quebra a estrutura limpa e legível.
+
+
+```tsx
+export const HeroSection = () => {
+  return (
+    <Container>
+      <span>Titulo</span> {/* Tag de contexto, isso não pode ocorrer */}
+      <Content>
+        <Tag />
+        <Heading />
+        <Role />
+        <Actions />
+      </Content>
+    </Container>
+  )
+}
+
+// Correto: toda tag HTML está dentro de um sub-componente, mantendo a estrutura limpa e legível
+const Title = ({children}: {children: React.ReactNode}) => (
+  <span className="font-mono text-xs uppercase tracking-widest text-slate-400">
+    {children}
+  </span>
+)
+
+const Text = ({children}: {children: React.ReactNode}) => (
+  <p className="text-base text-slate-500 leading-relaxed">
+    {children}
+  </p>
+)
+
+const Button = ({children}: {children: React.ReactNode}) => (
+  <button className="rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600">
+    {children}
+  </button>
+)
+
+// Exemplo de reaproveitamento: se o `Text` for usado em várias seções, ele pode ser extraído para um componente separado e reutilizado, mantendo a consistência visual e evitando repetição de código.
+
+const Tag = () => (
+  <Text>
+    disponível para projetos
+  </Text>
+)
+
+const Actions = () => (
+  <motion.div variants={fadeUp} className="flex gap-3">
+    <Button>
+      Ver projetos
+    </Button>
+    <Button>
+      Contato
+    </Button>
+  </motion.div>
+)
+
+// Exemplo de componente específico para uma tag repetida: se houver várias tags de contexto em diferentes seções, criar um componente `ContextTag` para encapsular a estilização e evitar repetição.
+
+const CompanyCard = ({ company, index }: { company: Company; index: number }) => {
+  const { language } = useI18nStore()
+  const t = translations[language].resume
+  const numberFormatted = index.toString().padStart(2, '0')
+
+  return (
+    <motion.div variants={fadeUp} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 space-y-6">
+      <CompanyHeader>
+        <span className="text-primary text-4xl md:text-5xl font-bold">{numberFormatted}</span>
+        <CompanyInfo>
+          <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">{company.name}</h3>
+          <span className="text-slate-500 text-sm">{company.period}</span>
+        </CompanyInfo>
+      </CompanyHeader>
+
+      <div className="space-y-3">
+        <h4 className="text-lg font-semibold text-slate-800">{company.role}</h4>
+        <p className="text-sm text-slate-600 leading-relaxed">{company.description}</p>
+      </div>
+
+      <AchievementsContainer>
+        <h5 className="font-mono text-xs uppercase tracking-widest text-primary">{t.achievementsLabel}</h5>
+        <AchievementsList>
+          {company.achievements.map((achievement, i) => (
+            <AchievementItem key={i}>{achievement}</AchievementItem>
+          ))}
+        </AchievementsList>
+      </AchievementsContainer>
+
+      <StackContainer>
+        {company.stack.map((tech) => (
+          <StackChip key={tech}>{tech}</StackChip>
+        ))}
+      </StackContainer>
+    </motion.div>
+  )
+}
+
+// Componentes internos para estruturação do card, mantendo a vitrine limpa e legível, esses seriam os componentes únicos responsáveis por cada parte do card, facilitando a leitura e manutenção do código, diferente do que está nesse component CompanyCard onde as tags HTML estão soltas e misturadas, quebrando a estrutura limpa e legível.
+const CompanyNumber = ({ number }: { number: string }) => (
+  <span className="text-primary text-4xl md:text-5xl font-bold">{number}</span>
+)
+
+const CompanyName = ({children}: {children: React.ReactNode}) => (
+  <h3 className="text-slate-800 text-xl md:text-2xl font-semibold">
+    {children}
+  </h3>
+)
+
+const CompanyPeriod = ({children}: {children: React.ReactNode}) => (
+  <span className="text-slate-500 text-sm">
+    {children}
+  </span>
+)
+
+const CompanyRoleDescription = ({children}: {children: React.ReactNode}) => (
+  <div className="space-y-3">
+    {children}
+  </div>
+)
+
+const RoleTitle = ({children}: {children: React.ReactNode}) => (
+  <h4 className="text-lg font-semibold text-slate-800">
+    {children}
+  </h4>
+)
+
+const RoleDescription = ({children}: {children: React.ReactNode}) => (
+  <p className="text-sm text-slate-600 leading-relaxed">
+    {children}
+  </p>
+)
+
+const AchievementText = ({children}: {children: React.ReactNode}) => (
+  <h5 className="font-mono text-xs uppercase tracking-widest text-primary">
+    {children}
+  </h5>
+)
+
+```
