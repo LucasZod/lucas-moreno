@@ -53,20 +53,27 @@ export const metadata: Metadata = {
     title: 'Lucas Moreno - Desenvolvedor Fullstack',
     description:
       'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis. React, Node.js, NestJS e C# .NET.',
-    // images: [
-    //   {
-    //     url: '/og-image.png',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Lucas Moreno - Desenvolvedor Fullstack'
-    //   }
-    // ]
+    images: [
+      {
+        url: '/assets/thumb.png',
+        width: 1200,
+        height: 630,
+        alt: 'Lucas Moreno - Desenvolvedor Fullstack',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Lucas Moreno - Desenvolvedor Fullstack',
     description: 'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis.',
-    // images: ['/og-image.png']
+    images: [
+      {
+        url: '/assets/thumb.png',
+        width: 1200,
+        height: 630,
+        alt: 'Lucas Moreno - Desenvolvedor Fullstack',
+      },
+    ],
   },
   robots: {
     index: true,
