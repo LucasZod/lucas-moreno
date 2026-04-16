@@ -57,6 +57,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://lucasmorenodev.com/assets/thumb.png',
+        width: 1200,
+        height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
       },
     ],
@@ -68,6 +70,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://lucasmorenodev.com/assets/thumb.png',
+        width: 1200,
+        height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
       },
     ],
