@@ -32,7 +32,11 @@ export const Menu = () => {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <header className="w-full bg-linear-to-r from-primary to-olive-700">{children}</header>
+  return (
+    <header className="w-full bg-linear-to-r from-primary to-olive-700" role="banner">
+      {children}
+    </header>
+  )
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -50,7 +54,7 @@ const BrandSection = ({ children }: { children: React.ReactNode }) => {
 const Logo = () => {
   return (
     <motion.div initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-      <Link href="/" className="inline-flex items-center gap-2 cursor-pointer">
+      <Link href="/" className="inline-flex items-center gap-2 cursor-pointer" aria-label="Página inicial">
         <CodeXml
           size={24}
           className="text-white hover:translate-x-0.5 hover:translate-y-0.5 transition-transform duration-300"
@@ -79,6 +83,7 @@ const LinkItem = ({ children, href, isActive }: { children: React.ReactNode; hre
         isActive ? 'text-white' : 'text-white/60'
       }`}
       href={href}
+      aria-current={isActive ? 'page' : undefined}
     >
       {children}
     </Link>

@@ -5,21 +5,33 @@ import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
 import React from 'react'
 import { Download } from 'lucide-react'
+import Script from 'next/script'
 
 export default function Resume() {
   return (
-    <Container>
-      <Layout>
-        <Header />
-        <Companies />
-        <AllHighlights />
-      </Layout>
-    </Container>
+    <React.Fragment>
+      <ScriptSeo />
+      <Container>
+        <Layout>
+          <Header />
+          <Companies />
+          <AllHighlights />
+        </Layout>
+      </Container>
+    </React.Fragment>
   )
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <main className="min-h-dvh bg-app transition-colors duration-300">{children}</main>
+  return (
+    <main
+      className="min-h-dvh bg-app transition-colors duration-300"
+      role="main"
+      aria-label="Currículo e experiência profissional"
+    >
+      {children}
+    </main>
+  )
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -52,6 +64,7 @@ const Header = () => {
         variants={fadeUp}
         onClick={handleDownloadPDF}
         className="inline-flex items-center gap-2 px-4 py-3 bg-linear-to-r from-green-accent to-olive-600 text-white text-sm font-medium rounded-lg hover:bg-[#537d1d] transition-colors duration-300"
+        aria-label="Baixar currículo em PDF"
       >
         <Download size={18} />
         {t.download}
@@ -71,6 +84,7 @@ const Companies = () => {
       viewport={{ once: true, amount: 0.1 }}
       variants={staggerContainer}
       className="space-y-6"
+      aria-label="Experiências em empresas"
     >
       {companies.map((company, index) => (
         <CompanyCard key={company.name} company={company} index={index + 1} />
@@ -219,6 +233,35 @@ const AllHighlights = () => {
         ))}
       </motion.div>
     </motion.section>
+  )
+}
+
+const ScriptSeo = () => {
+  return (
+    <Script
+      id="breadcrumb-resume"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://lucasmorenodev.com',
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Currículo',
+              item: 'https://lucasmorenodev.com/resume',
+            },
+          ],
+        }),
+      }}
+    />
   )
 }
 

@@ -24,7 +24,11 @@ export default function Home() {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <main className="min-h-dvh bg-[#F8F7F4]">{children}</main>
+  return (
+    <main className="min-h-dvh bg-[#F8F7F4]" role="main" aria-label="Conteúdo principal">
+      {children}
+    </main>
+  )
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -32,7 +36,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 }
 
 const HeroContainer = ({ children }: { children: React.ReactNode }) => {
-  return <section className="space-y-6">{children}</section>
+  return (
+    <section className="space-y-6" aria-label="Introdução e apresentação">
+      {children}
+    </section>
+  )
 }
 
 const Title = () => {
@@ -96,6 +104,7 @@ const ExperienceContainer = ({ children }: { children: React.ReactNode }) => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={staggerContainer}
+      aria-label="Experiências profissionais"
     >
       {children}
     </motion.section>
@@ -215,6 +224,7 @@ const SkillsContainer = ({ children }: { children: React.ReactNode }) => {
       viewport={{ once: true, amount: 0.2 }}
       variants={staggerContainer}
       className="space-y-8"
+      aria-label="Habilidades técnicas"
     >
       {children}
     </motion.section>
@@ -316,6 +326,7 @@ const AboutContainer = ({ children }: { children: React.ReactNode }) => {
       viewport={{ once: true, amount: 0.2 }}
       variants={staggerContainer}
       className="space-y-8"
+      aria-label="Sobre mim"
     >
       {children}
     </motion.section>
@@ -401,6 +412,7 @@ const ProjectsContainer = ({ children }: { children: React.ReactNode }) => {
       viewport={{ once: true, amount: 0.1 }}
       variants={staggerContainer}
       className="space-y-8"
+      aria-label="Projetos realizados"
     >
       {children}
     </motion.section>

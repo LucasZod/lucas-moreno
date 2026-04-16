@@ -3,24 +3,36 @@
 import { motion, Variants, AnimatePresence } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import Script from 'next/script'
+import dynamic from 'next/dynamic'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 export default function Patterns() {
   return (
-    <Container>
-      <Layout>
-        <Header />
-        <PatternsList />
-      </Layout>
-    </Container>
+    <React.Fragment>
+      <ScriptSeo />
+      <Container>
+        <Layout>
+          <Header />
+          <PatternsList />
+        </Layout>
+      </Container>
+    </React.Fragment>
   )
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <main className="min-h-dvh bg-app transition-colors duration-300">{children}</main>
+  return (
+    <main
+      className="min-h-dvh bg-app transition-colors duration-300"
+      role="main"
+      aria-label="Design Patterns e padrões de arquitetura"
+    >
+      {children}
+    </main>
+  )
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -58,6 +70,7 @@ const PatternsList = () => {
       viewport={{ once: true, amount: 0.2 }}
       variants={staggerContainer}
       className="space-y-6"
+      aria-label="Lista de design patterns"
     >
       {patterns.map((pattern, index) => (
         <PatternCard key={pattern.name} pattern={pattern} index={index + 1} />
@@ -201,12 +214,23 @@ const ExpandButton = ({ isExpanded, onClick, label }: ExpandButtonProps) => {
     <button
       onClick={onClick}
       className="w-full cursor-pointer flex items-center justify-center gap-2 py-3 text-primary text-sm font-medium hover:bg-primary/5 transition-all duration-300 rounded-lg group"
+      aria-expanded={isExpanded}
+      aria-label={isExpanded ? 'Recolher detalhes' : 'Expandir detalhes'}
     >
       <span>{isExpanded ? label.viewLess : label.viewMore}</span>
       <ChevronDown size={16} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
     </button>
   )
 }
+
+const SyntaxHighlighter = dynamic(() => import('react-syntax-highlighter').then((mod) => mod.Prism), {
+  ssr: false,
+  loading: () => (
+    <div className="animate-pulse bg-slate-800 h-40 rounded-lg flex items-center justify-center">
+      <span className="text-slate-400 text-sm">Carregando código...</span>
+    </div>
+  ),
+})
 
 const CodeBlock = ({ children }: { children: React.ReactNode }) => {
   const customStyle = {
@@ -234,6 +258,35 @@ const CodeBlock = ({ children }: { children: React.ReactNode }) => {
     >
       {String(children)}
     </SyntaxHighlighter>
+  )
+}
+
+const ScriptSeo = () => {
+  return (
+    <Script
+      id="breadcrumb-patterns"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://lucasmorenodev.com',
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Design Patterns',
+              item: 'https://lucasmorenodev.com/patterns',
+            },
+          ],
+        }),
+      }}
+    />
   )
 }
 

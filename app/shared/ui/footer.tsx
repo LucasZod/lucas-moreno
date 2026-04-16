@@ -16,7 +16,11 @@ export const Footer = () => {
 }
 
 const Container = ({ children }: { children: React.ReactNode }) => {
-  return <footer className="w-full border-t border-white/5 bg-linear-to-r from-primary to-olive-700">{children}</footer>
+  return (
+    <footer className="w-full border-t border-white/5 bg-linear-to-r from-primary to-olive-700" role="contentinfo">
+      {children}
+    </footer>
+  )
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -32,7 +36,7 @@ const SocialLinks = () => {
   const contact = translations[language].resume?.contact
 
   return (
-    <nav className="flex items-center gap-6">
+    <nav className="flex items-center gap-6" aria-label="Links de contato e redes sociais">
       <LinkedInLink url={contact?.linkedin} />
       <PhoneLink phone={contact?.phone} />
       <InstagramLink />
