@@ -869,70 +869,70 @@ const BookingList = ({ service }: { service: BookingService }) => {
 
     experiences: [
       {
-        headerTitle: '01 // MARKETPLACE & AGENDAMENTO',
+        headerTitle: '01 - MARKETPLACE & AGENDAMENTO',
         title: 'SISTEMAS PARA CFCs, PILOTAR',
         subtitle: 'Marketplace completo com geolocalização, agendamento inteligente com locking pessimista para eliminar conflitos e painel administrativo. Latência de checkout de 4s para 800ms. Queries de 3.2s para 800ms. Cache Redis reduziu 40% das chamadas em pico.',
         chip: ['NESTJS', 'NEXT.JS 14/15', 'C#/.NET', 'REDIS', 'DDD', 'GCP PUB/SUB', 'POSTGRESQL'],
         iconSrc: 'codeIcon'
       },
       {
-        headerTitle: '02 // CONTA DIGITAL & FINTECH',
+        headerTitle: '02 - CONTA DIGITAL & FINTECH',
         title: 'SISTEMA DE PAGAMENTOS, HYPERPAY',
         subtitle: 'Conta digital completa com PIX, boleto e cobranças. Integrações bancárias, Azure e SERPRO. Retry com backoff exponencial e dead letter queue. Taxa de erro abaixo de 0.5%. Latência média abaixo de 1.2s em pico.',
         chip: ['PIX', 'NESTJS', 'REDIS', 'EVENT-DRIVEN', 'AZURE', 'SERPRO', 'POSTGRESQL'],
         iconSrc: 'finanIcon'
       },
       {
-        headerTitle: '03 // GED CORPORATIVO',
+        headerTitle: '03 - GED CORPORATIVO',
         title: 'GESTÃO ELETRÔNICA DE DOCUMENTOS, AMPPLI',
         subtitle: 'Sistema completo com upload, versionamento, busca avançada e RBAC. Ganho de ~80% no tempo de resposta com índices estratégicos. Integrações com sistemas legados corporativos via adapters robustos.',
         chip: ['NODE.JS', 'POSTGRESQL', 'REDIS', 'DDD', 'SOLID', 'REACT', 'TYPESCRIPT'],
         iconSrc: 'gedIcon'
       },
       {
-        headerTitle: '04 // ARQUITETURA DISTRIBUÍDA',
+        headerTitle: '04 - ARQUITETURA DISTRIBUÍDA',
         title: 'EVENT-DRIVEN & MENSAGERIA',
         subtitle: 'Workers assíncronos com GCP Pub/Sub, tabela de eventos com retry e backoff exponencial e dead letter queue. Separação de operações síncronas e assíncronas garantindo consistência sem travar o fluxo principal.',
         chip: ['DDD', 'EVENT-DRIVEN', 'GCP PUB/SUB', 'RETRY', 'DEAD LETTER', 'IDEMPOTÊNCIA'],
         iconSrc: 'archIcon'
       },
       {
-        headerTitle: '05 // PERFORMANCE & OTIMIZAÇÃO',
+        headerTitle: '05 - PERFORMANCE & OTIMIZAÇÃO',
         title: 'SISTEMAS DE ALTA PERFORMANCE',
         subtitle: 'Otimização de queries com índices compostos e paginação server-side. Cache Redis com TTL e invalidação estratégica. Locking pessimista para consistência em concorrência. Resultados de 60-80% de melhoria em endpoints críticos.',
         chip: ['REDIS', 'POSTGRESQL', 'ÍNDICES', 'CACHE', 'LOCKING'],
         iconSrc: 'engPerfIcon'
       },
       {
-        headerTitle: '06 // INTEGRAÇÕES COMPLEXAS',
+        headerTitle: '06 - INTEGRAÇÕES COMPLEXAS',
         title: 'APIS & SISTEMAS EXTERNOS',
         subtitle: 'Integrações com APIs bancárias, Azure (criptografia e validação facial), SERPRO e sistemas legados. Retry com backoff, circuit breaker e adapters para isolar o domínio de detalhes externos.',
         chip: ['REST', 'AZURE', 'SERPRO', 'CIRCUIT BREAKER', 'ADAPTER PATTERN'],
         iconSrc: 'sisIcon'
       },
       {
-        headerTitle: '07 // PAINEL GESTOR C#/.NET',
+        headerTitle: '07 - PAINEL GESTOR C#/.NET',
         title: 'SISTEMA ADMINISTRATIVO, PILOTAR',
         subtitle: 'Painel completo em C#/.NET para gerenciamento de autoescolas. Agendamentos, gestão de alunos, instrutores, serviços, pacotes de habilitação, relatórios financeiros e controle operacional.',
         chip: ['C#/.NET', 'ENTITY FRAMEWORK', 'POSTGRESQL', 'BACKGROUND SERVICES'],
         iconSrc: 'codeIcon'
       },
       {
-        headerTitle: '08 // CLEAN ARCHITECTURE',
+        headerTitle: '08 - CLEAN ARCHITECTURE',
         title: 'ARQUITETURA HEXAGONAL & DDD',
         subtitle: 'Domain no centro, tudo externo via portas e adapters. Value Objects garantem invariantes, Aggregates protegem consistência, Domain Events desacoplam efeitos colaterais. Domínio testável sem banco nem framework.',
         chip: ['DDD', 'HEXAGONAL', 'PORTS & ADAPTERS', 'DOMAIN EVENTS', 'VALUE OBJECTS'],
         iconSrc: 'archIcon'
       },
       {
-        headerTitle: '09 // FRONTEND AVANÇADO',
+        headerTitle: '09 - FRONTEND AVANÇADO',
         title: 'REACT & NEXT.JS AVANÇADO',
         subtitle: 'SSR, SSG e ISR com Next.js 14/15. Composition Pattern com sub-componentes SRP. Custom hooks para separar lógica de apresentação. useMemo e useCallback só quando necessário. SEO técnico e performance como prioridade.',
         chip: ['REACT', 'NEXT.JS 14/15', 'SSR', 'ISR', 'COMPOSITION PATTERN', 'SEO'],
         iconSrc: 'codeIcon'
       },
       {
-        headerTitle: '10 // SYSTEM DESIGN',
+        headerTitle: '10 - SYSTEM DESIGN',
         title: 'DESIGN DE SISTEMAS DISTRIBUÍDOS',
         subtitle: 'Load balancer com estratégias round robin e least connections. Cache-aside com Redis e TTL. CAP theorem e trade-offs de consistência eventual. Kafka vs RabbitMQ. Blue/green e canary deploy. Observabilidade com logs, métricas e traces.',
         chip: ['SYSTEM DESIGN', 'LOAD BALANCER', 'CAP THEOREM', 'KAFKA', 'OBSERVABILIDADE'],
@@ -1786,70 +1786,70 @@ const BookingList = ({ service }: { service: BookingService }) => {
 
     experiences: [
       {
-        headerTitle: '01 // MARKETPLACE & SCHEDULING',
+        headerTitle: '01 - MARKETPLACE & SCHEDULING',
         title: 'DRIVING SCHOOL SYSTEMS, PILOTAR',
         subtitle: 'Complete marketplace with geolocation, intelligent scheduling with pessimistic locking to eliminate conflicts and admin panel. Checkout latency from 4s to 800ms. Queries from 3.2s to 800ms. Redis cache reduced 40% of API calls at peak.',
         chip: ['NESTJS', 'NEXT.JS 14/15', 'C#/.NET', 'REDIS', 'DDD', 'GCP PUB/SUB', 'POSTGRESQL'],
         iconSrc: 'codeIcon'
       },
       {
-        headerTitle: '02 // DIGITAL ACCOUNT & FINTECH',
+        headerTitle: '02 - DIGITAL ACCOUNT & FINTECH',
         title: 'PAYMENT SYSTEM, HYPERPAY',
         subtitle: 'Complete digital account with PIX, bank slip and charges. Banking integrations, Azure and SERPRO. Retry with exponential backoff and dead letter queue. Error rate below 0.5%. Average latency below 1.2s at peak.',
         chip: ['PIX', 'NESTJS', 'REDIS', 'EVENT-DRIVEN', 'AZURE', 'SERPRO', 'POSTGRESQL'],
         iconSrc: 'finanIcon'
       },
       {
-        headerTitle: '03 // CORPORATE DMS',
+        headerTitle: '03 - CORPORATE DMS',
         title: 'ELECTRONIC DOCUMENT MANAGEMENT, AMPPLI',
         subtitle: 'Complete system with upload, versioning, advanced search and RBAC. ~80% improvement in response time with strategic indexes. Integrations with corporate legacy systems via robust adapters.',
         chip: ['NODE.JS', 'POSTGRESQL', 'REDIS', 'DDD', 'SOLID', 'REACT', 'TYPESCRIPT'],
         iconSrc: 'gedIcon'
       },
       {
-        headerTitle: '04 // DISTRIBUTED ARCHITECTURE',
+        headerTitle: '04 - DISTRIBUTED ARCHITECTURE',
         title: 'EVENT-DRIVEN & MESSAGING',
         subtitle: 'Async workers with GCP Pub/Sub, events table with retry and exponential backoff and dead letter queue. Separation of sync and async operations ensuring consistency without blocking the main flow.',
         chip: ['DDD', 'EVENT-DRIVEN', 'GCP PUB/SUB', 'RETRY', 'DEAD LETTER', 'IDEMPOTENCY'],
         iconSrc: 'archIcon'
       },
       {
-        headerTitle: '05 // PERFORMANCE & OPTIMIZATION',
+        headerTitle: '05 - PERFORMANCE & OPTIMIZATION',
         title: 'HIGH-PERFORMANCE SYSTEMS',
         subtitle: 'Query optimization with composite indexes and server-side pagination. Redis cache with TTL and strategic invalidation. Pessimistic locking for concurrency consistency. 60-80% improvement in critical endpoints.',
         chip: ['REDIS', 'POSTGRESQL', 'INDEXES', 'CACHE', 'LOCKING'],
         iconSrc: 'engPerfIcon'
       },
       {
-        headerTitle: '06 // COMPLEX INTEGRATIONS',
+        headerTitle: '06 - COMPLEX INTEGRATIONS',
         title: 'APIS & EXTERNAL SYSTEMS',
         subtitle: 'Integrations with banking APIs, Azure (encryption and facial validation), SERPRO and legacy systems. Retry with backoff, circuit breaker and adapters to isolate the domain from external details.',
         chip: ['REST', 'AZURE', 'SERPRO', 'CIRCUIT BREAKER', 'ADAPTER PATTERN'],
         iconSrc: 'sisIcon'
       },
       {
-        headerTitle: '07 // ADMIN PANEL C#/.NET',
+        headerTitle: '07 - ADMIN PANEL C#/.NET',
         title: 'MANAGEMENT SYSTEM, PILOTAR',
         subtitle: 'Complete C#/.NET panel for driving school management. Scheduling, student and instructor management, services, license packages, financial reports and operational control.',
         chip: ['C#/.NET', 'ENTITY FRAMEWORK', 'POSTGRESQL', 'BACKGROUND SERVICES'],
         iconSrc: 'codeIcon'
       },
       {
-        headerTitle: '08 // CLEAN ARCHITECTURE',
+        headerTitle: '08 - CLEAN ARCHITECTURE',
         title: 'HEXAGONAL ARCHITECTURE & DDD',
         subtitle: 'Domain at the center, everything external via ports and adapters. Value Objects guarantee invariants, Aggregates protect consistency, Domain Events decouple side effects. Domain testable without database or framework.',
         chip: ['DDD', 'HEXAGONAL', 'PORTS & ADAPTERS', 'DOMAIN EVENTS', 'VALUE OBJECTS'],
         iconSrc: 'archIcon'
       },
       {
-        headerTitle: '09 // ADVANCED FRONTEND',
+        headerTitle: '09 - ADVANCED FRONTEND',
         title: 'REACT & NEXT.JS ADVANCED',
         subtitle: 'SSR, SSG and ISR with Next.js 14/15. Composition Pattern with SRP sub-components. Custom hooks to separate logic from presentation. useMemo and useCallback only when necessary. Technical SEO and performance as priority.',
         chip: ['REACT', 'NEXT.JS 14/15', 'SSR', 'ISR', 'COMPOSITION PATTERN', 'SEO'],
         iconSrc: 'codeIcon'
       },
       {
-        headerTitle: '10 // SYSTEM DESIGN',
+        headerTitle: '10 - SYSTEM DESIGN',
         title: 'DISTRIBUTED SYSTEMS DESIGN',
         subtitle: 'Load balancer with round robin and least connections strategies. Cache-aside with Redis and TTL. CAP theorem and eventual consistency trade-offs. Kafka vs RabbitMQ. Blue/green and canary deploy. Observability with logs, metrics and traces.',
         chip: ['SYSTEM DESIGN', 'LOAD BALANCER', 'CAP THEOREM', 'KAFKA', 'OBSERVABILITY'],

@@ -122,7 +122,7 @@ const ExperienceCard = ({ experience }: { experience: Experience }) => {
   const IconComponent = iconMap[experience.iconSrc] || Code2
 
   return (
-    <motion.div variants={fadeLeft} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6">
+    <motion.div variants={fadeLeft} className="bg-slate-50 border border-green-accent/20 rounded-xl p-6 group">
       <ExperienceCardContainer>
         <ExperienceCardHeader>
           <ExperienceHeaderLabel>{experience.headerTitle}</ExperienceHeaderLabel>
@@ -159,15 +159,16 @@ const ExperienceCardTags = ({ children }: { children: React.ReactNode }) => {
 }
 
 const ExperienceHeaderLabel = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <span className="font-mono text-xs uppercase tracking-widest text-green-accent">
-      {children}
-    </span>
-  )
+  return <span className="font-mono text-xs uppercase tracking-widest text-green-accent">{children}</span>
 }
 
 const ExperienceIcon = ({ icon: Icon }: { icon: React.ComponentType<{ size?: number; className?: string }> }) => {
-  return <Icon size={24} className="text-green-accent hover:scale-110 transition-transform duration-300" />
+  return (
+    <Icon
+      size={24}
+      className="text-green-accent transition-transform duration-300 group-hover:rotate-6 group-hover:scale-115"
+    />
+  )
 }
 
 const ExperienceTitle = ({ children }: { children: React.ReactNode }) => {
@@ -495,11 +496,7 @@ const ProjectCardHeader = ({ children }: { children: React.ReactNode }) => {
 }
 
 const ProjectHeaderTitle = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <span className="font-mono uppercase tracking-wide text-green-accent">
-      {children}
-    </span>
-  )
+  return <span className="font-mono uppercase tracking-wide text-green-accent">{children}</span>
 }
 
 const ProjectCardContent = ({ children }: { children: React.ReactNode }) => {
