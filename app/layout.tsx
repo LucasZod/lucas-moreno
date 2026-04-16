@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis. React, Node.js, NestJS e C# .NET.',
     images: [
       {
-        url: '/assets/thumb.png',
+        url: 'https://lucasmorenodev.com/assets/thumb.png',
         width: 1200,
         height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     description: 'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis.',
     images: [
       {
-        url: '/assets/thumb.png',
+        url: 'https://lucasmorenodev.com/assets/thumb.png',
         width: 1200,
         height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
