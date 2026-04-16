@@ -15,6 +15,7 @@ const jetBrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://lucasmoreno.dev'),
   title: {
     default: 'Lucas Moreno - Desenvolvedor Fullstack | React, Node.js, NestJS',
     template: '%s | Lucas Moreno',
