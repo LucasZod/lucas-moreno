@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis. React, Node.js, NestJS e C# .NET.',
     images: [
       {
-        url: '/assets/thumb.png',
+        url: 'https://lucasmoreno.dev/assets/thumb.png',
         width: 1200,
         height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     description: 'Desenvolvedor Fullstack especializado em arquitetura de sistemas escaláveis.',
     images: [
       {
-        url: '/assets/thumb.png',
+        url: 'https://lucasmoreno.dev/assets/thumb.png',
         width: 1200,
         height: 630,
         alt: 'Lucas Moreno - Desenvolvedor Fullstack',
@@ -95,7 +95,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${jetBrainsMono.variable} h-full antialiased`}>
+    <html lang="pt-BR" className={`${plusJakartaSans.variable} ${jetBrainsMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Menu />
         {children}
