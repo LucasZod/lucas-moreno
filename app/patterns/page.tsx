@@ -169,7 +169,7 @@ const PatternTitle = ({ children }: { children: React.ReactNode }) => {
 }
 
 const ExpandedContent = ({ children }: { children: React.ReactNode }) => {
-  return <div className="space-y-6 pt-4 px-1">{children}</div>
+  return <div className="space-y-6 pt-4 px-1 md:px-5">{children}</div>
 }
 
 const PatternLayout = ({ children }: { children: React.ReactNode }) => {
