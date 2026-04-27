@@ -3,8 +3,9 @@
 import { motion, Variants } from 'framer-motion'
 import { useI18nStore } from '@/app/stores/i18n-store'
 import { translations } from '@/app/locales/translations'
-import { Code2, Banknote, FileText, Server, Zap, Network } from 'lucide-react'
+import { Code2, Banknote, FileText, Server, Zap, Network, ArrowRight } from 'lucide-react'
 import { Carousel } from './shared/libs/carousel'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <HeroContainer>
           <Title />
           <Subtitle />
+          <QuickLinks />
         </HeroContainer>
         <Experience />
         <Skills />
@@ -79,6 +81,39 @@ const Subtitle = () => {
         {t.subtitle}
       </motion.p>
     </motion.section>
+  )
+}
+
+const QuickLinks = () => {
+  const { language } = useI18nStore()
+  const t = translations[language]
+
+  return (
+    <motion.nav
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+      className="flex gap-4 mt-4"
+      aria-label="Navegação rápida"
+    >
+      <QuickLink href="/resume" label={t.menu.resume} />
+      <QuickLink href="/patterns" label={t.menu.patterns} />
+    </motion.nav>
+  )
+}
+
+const QuickLink = ({ href, label }: { href: string; label: string }) => {
+  return (
+    <motion.div variants={fadeUp}>
+      <Link
+        href={href}
+        className="inline-flex items-center gap-2 px-4 py-2 bg-green-accent/10 hover:bg-green-accent/20 border border-green-accent/30 rounded-lg text-green-accent font-medium text-xs transition-all duration-300 group"
+      >
+        {label}
+        <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+      </Link>
+    </motion.div>
   )
 }
 

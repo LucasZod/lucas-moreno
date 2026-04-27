@@ -2,26 +2,26 @@ import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://lucasmorenodev.com'
-  const currentDate = new Date()
+  const currentDate = new Date().toISOString()
 
   return [
     {
       url: baseUrl,
       lastModified: currentDate,
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly' as const,
       priority: 1.0,
     },
     {
       url: `${baseUrl}/resume`,
       lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/patterns`,
       lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
   ]
 }

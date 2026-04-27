@@ -22,6 +22,22 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 5,
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', sizes: '16x16', type: 'image/x-icon' },
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+    ],
+    apple: [
+      { url: '/favicon.ico', sizes: '180x180', type: 'image/x-icon' },
+    ],
+    other: [
+      {
+        rel: 'icon',
+        url: '/favicon.ico',
+      },
+    ],
+  },
   title: {
     default: 'Lucas Moreno - Senior Full Stack Developer | React, Node.js, NestJS, TypeScript',
     template: '%s | Lucas Moreno',
